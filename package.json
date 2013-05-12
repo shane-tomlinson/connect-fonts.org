@@ -1,0 +1,33 @@
+{
+  "Author": "Shane Tomlinson <shane@shanetomlinson.com> (https://shanetomlinson.com)",
+  "name": "connectfonts.org",
+  "description": "connectfonts.org homepage",
+  "keywords": ["font", "font-face", "CSS", "connectfonts.org", "connect-fonts"],
+  "homepage": "https://github.com/shane-tomlinson/connectfonts.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shane-tomlinson/connectfonts.org.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shane-tomlinson/connectfonts.org/issues"
+  },
+  "version": "0.0.1",
+  "engines": {
+    "node": ">= 0.6.2"
+  },
+  "main": "index",
+  "dependencies": {
+    "express": "3.2.4",
+    "connect-fonts": "0.0.9-beta1",
+    "connect-fonts-opensans": "0.0.3-beta1",
+    "swig": "0.13.5",
+    "consolidate": "0.9.1"
+  },
+  "devDependencies": {
+    "nodeunit": "0.7.4"
+  },
+  "scripts": {
+    "start": "node server/start.js",
+    "test": "nodeunit test"
+  }
+}
