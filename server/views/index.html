@@ -90,7 +90,8 @@ app.use(font_middleware.setup({
       Add a link tag to include the font CSS.
       To serve a default, non-locale specific font, include a CSS link that contains the name of the font:
       <pre>
-&lt;link href="/opensans-regular/fonts.css" type="text/css" rel="stylesheet"/ &gt;
+&lt;link href="/opensans-regular/fonts.css" type="text/css"
+    rel="stylesheet"/ &gt;
       </pre>
     </li>
 
@@ -113,17 +114,20 @@ body {
   </pre>html
 &lt;link href="/en/opensans-regular/fonts.css" type="text/css" rel="stylesheet"/ &gt;
   </pre>
-  `scripts/subset` from [connect-fonts-tools](https://github.com/shane-tomlinson/connect-fonts-tools) can be used to create locale-optimised subsets.
+  <code>scripts/subset</code> from <a href="https://github.com/shane-tomlinson/connect-fonts-tools" target="_blank">connect-fonts-tools</a> can be used to create locale-optimised subsets.
 
 
 <h3>Programatically generate CSS for use in build steps</h3>
   One of the easiest ways to speed up your site is to minimize the number of resources that are requested. The @font-face CSS provided by fonts.css can be fetched programatically and concatinated with other site CSS during a build step.
   <pre>
 // font_middleware.setup has already been called.
-// `ua` - user agent. Use 'all' for a CSS bundle that is compatible with all browsers.
-// `lang` - language. generate_css can be called once for each served language, or
-//            "default" can be specified
-// `fonts` - array of font names - e.g. ["opensans-regular", "opensans-italics"]
+// `ua` - user agent. Use 'all' for a CSS bundle that
+//     is compatible with all browsers.
+// `lang` - language. generate_css can be called once
+//     for each served language, or "default" can be
+//     specified
+// `fonts` - array of font names -
+//     e.g. ["opensans-regular", "opensans-italics"]
 font_middleware.generate_css(ua, lang, fonts, function(err, css) {
   var css_output_path = path.join(output_dir, dep);
   var css_output_dir = path.dirname(css_output_path);
@@ -137,7 +141,10 @@ font_middleware.generate_css(ua, lang, fonts, function(err, css) {
   </pre>
 
 <h3>Direct access to font files</h3>
-  Once the middleware setup function is called, a map of URLs=>paths can be retreived using font_middleware.urlToPaths. This information can be used in a build step for tools like [connect-cachify](https://github.com/mozilla/connect-cachify/) that need access to the font file to create an caching hash.
+  Once the middleware setup function is called, a map of URLs=>paths can be
+  retreived using font_middleware.urlToPaths. This information can be used in
+  a build step for tools like <a
+  href="https://github.com/mozilla/connect-cachify/" target="_blank">connect-cachify</a> that need access to the font file to create an caching hash.
 
 
 <h2>Creating a Font Pack</h2>
@@ -145,7 +152,7 @@ font_middleware.generate_css(ua, lang, fonts, function(err, css) {
 
   <ol>
     <li>
-      Install <a href="https://github.com/shane-tomlinson/connect-fonts-tools" target="_blank">connect-fonts-tools</a> and run its `scripts/setup` utility.
+      Install <a href="https://github.com/shane-tomlinson/connect-fonts-tools" target="_blank">connect-fonts-tools</a> and run its <code>scripts/setup</code> utility.
       <pre>
 npm install connect-fonts-tools
 cd node_modules/connect-fonts-tools
@@ -163,11 +170,14 @@ mkdir &lt;target_path&gt;
     <li>
       Call <code>scripts/create_fontpack</code> from connect-font-tools with the source directory, the target directory, and the pack name.
       <pre>
-connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; --sp &lt;source_path&gt; --tp &lt;target_path&gt;
+connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; \
+    --sp &lt;source_path&gt; --tp &lt;target_path&gt;
       </pre>
       If the font pack is for public use, specify the additional parameters to be placed inside the font pack's package.json and README.md files.
       <pre>
-connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; --ph &lt;pack_homepage_url&gt; --pr &lt;pack_repo_url&gt; --pb &lt;pack_bugtracker_url&gt; --sp &lt;source_path&gt; --tp &lt;target_path&gt;
+connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; \
+    --ph &lt;pack_homepage_url&gt; --pr &lt;pack_repo_url&gt; \
+    --pb &lt;pack_bugtracker_url&gt; --sp &lt;source_path&gt; --tp &lt;target_path&gt;
       </pre>
     </li>
 
