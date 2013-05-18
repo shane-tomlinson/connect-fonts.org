@@ -9,7 +9,10 @@
   <h1>Connect-fonts</h1>
 
   <p>
-  Connect/Express font serving middleware. Why? Because Google's font CDN is slow and slow page loads cause users to leave your site.
+  <a href="https://github.com/shane-tomlinson/connect-fonts"
+  target="_blank">Connect-fonts</a> is a font serving middleware for
+  Connect/Express. Why? Because Google's font CDN is slow and bad performance
+  causes users to leave your site.
   </p>
 
   <p>
@@ -34,7 +37,18 @@
   <h2>Usage</h2>
   <ol>
     <li>
-      Include connect-fonts in a node module.
+      Install the middleware
+      <pre>
+npm install connect-fonts
+      </pre>
+    </li>
+    <li>
+      Install a font-pack
+      <pre>
+npm install connect-fonts-opensans
+      </pre>
+    <li>
+      Include connect-fonts in your node code.
       <pre>
 const font_middleware = require("connect-fonts");
       </pre>
@@ -68,8 +82,7 @@ app.use(font_middleware.setup({
         users. If not specified, the user's user-agent header will be used to
         send the user only the fonts that their user-agent support.</dd>
         <dt>maxage</dt>
-        <dd>provide a max-age in milliseconds for http caching, defaults to
-        0.</dd>
+        <dd>provide a max-age in milliseconds for http caching, defaults to 0.</dd>
       </dl>
     </li>
 
@@ -105,7 +118,7 @@ body {
 
 <h3>Programatically generate CSS for use in build steps</h3>
   One of the easiest ways to speed up your site is to minimize the number of resources that are requested. The @font-face CSS provided by fonts.css can be fetched programatically and concatinated with other site CSS during a build step.
-  </pre>js
+  <pre>
 // font_middleware.setup has already been called.
 // `ua` - user agent. Use 'all' for a CSS bundle that is compatible with all browsers.
 // `lang` - language. generate_css can be called once for each served language, or
@@ -132,7 +145,7 @@ font_middleware.generate_css(ua, lang, fonts, function(err, css) {
 
   <ol>
     <li>
-      Install [connect-fonts-tools](https://github.com/shane-tomlinson/connect-fonts-tools) and run its `scripts/setup` utility.
+      Install <a href="https://github.com/shane-tomlinson/connect-fonts-tools" target="_blank">connect-fonts-tools</a> and run its `scripts/setup` utility.
       <pre>
 npm install connect-fonts-tools
 cd node_modules/connect-fonts-tools
@@ -148,7 +161,7 @@ mkdir &lt;target_path&gt;
     </li>
 
     <li>
-      Call ``scripts/create_fontpack`` from connect-font-tools with the source directory, the target directory, and the pack name.
+      Call <code>scripts/create_fontpack</code> from connect-font-tools with the source directory, the target directory, and the pack name.
       <pre>
 connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; --sp &lt;source_path&gt; --tp &lt;target_path&gt;
       </pre>
@@ -160,7 +173,9 @@ connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; --ph &lt;pack
 
     <li>
       Check your font pack.
-      ``script/check_font_pack.js`` is a basic font pack linter. It will check whether pack configuration is sane and if all expected font files are available. To use it, call ``check_font_pack.js`` with the absolute path to the font pack's configuration file.
+      <code>script/check_font_pack.js</code> is a basic font pack linter. It
+      will check whether pack configuration is sane and if all expected font
+      files are available. To use it, call <code>check_font_pack.js</code> with the absolute path to the font pack's configuration file.
       <pre>
 script/check_font_pack.js ~/development/connect-fonts-opensans/index.js
       </pre>
@@ -193,6 +208,9 @@ npm install &lt;font_pack_directory&gt;
     </li>
   </ol>
 
+<h2>Code</h2>
+The source lives on GitHub at <a href="https://github.com/shane-tomlinson/connect-fonts">https://github.com/shane-tomlinson/connect-fonts</a>. The npm module can be installed using <code>npm install connect-fonts</code>.
+
 <h2>Author</h2>
 <ul>
   <li>Shane Tomlinson</li>
@@ -206,7 +224,11 @@ npm install &lt;font_pack_directory&gt;
 </ul>
 
 <h2>Getting involved</h2>
-  MOAR font packs! See [connect-fonts-tools](https://github.com/shane-tomlinson/connect-fonts-tools) for tools to make this easy. [connect-fonts-opensans](https://github.com/shane-tomlinson/connect-fonts-opensans) is an example of a finished font pack.
+  MOAR font packs! See <a
+  href="https://github.com/shane-tomlinson/connect-fonts-tools"
+  target="_blank">connect-fonts-tools</a> for tools to make font pack creation
+  easy. <a href="https://github.com/shane-tomlinson/connect-fonts-opensans"
+  target="_blank">connect-fonts-opensans</a> is an example of a finished font pack.
 
   Any updates to connect-fonts are appreciated. All submissions will be reviewed and considered for merge.
 
@@ -214,7 +236,7 @@ npm install &lt;font_pack_directory&gt;
   This software is available under version 2.0 of the MPL:
 
   <p>
-    https://www.mozilla.org/MPL/
+    <a href="https://www.mozilla.org/MPL/" target="_blank">https://www.mozilla.org/MPL/</a>
   </p>
 
 

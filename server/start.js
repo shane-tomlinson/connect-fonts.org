@@ -26,6 +26,8 @@ app.set('views', TEMPLATE_PATH);
 
 app.use(connect_fonts.setup({
   fonts: [ fontpack_opensans ],
+  allow_origin: "*",
+  maxage: 180 * 24 * 60 * 60 * 1000,   // 180 days
   ua: 'all'
 }));
 
