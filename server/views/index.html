@@ -7,5 +7,216 @@
 
 {% block content %}
   <h1>Connect-fonts</h1>
+
+  <p>
+  Connect/Express font serving middleware. Why? Because Google's font CDN is slow and slow page loads cause users to leave your site.
+  </p>
+
+  <p>
+    The middleware looks for requests (expressed in Express terminology):
+    <pre>
+/:font-list/fonts.css
+    </pre>
+  </p>
+
+
+  <p>
+    An example of a match is:
+    <pre>
+/opensans-regular,opensans-italics/fonts.css
+    </pre>
+  </p>
+
+  <p>
+    When this route is matched, connect-fonts will generate a CSS response with @font-face declarations that are tailored to the user's browser.
+  </p>
+
+  <h2>Usage</h2>
+  <ol>
+    <li>
+      Include connect-fonts in a node module.
+      <pre>
+const font_middleware = require("connect-fonts");
+      </pre>
+    </li>
+
+    <li>
+      Include the font packs that you want to serve.
+      <pre>
+const opensans = require("connect-fonts-opensans");
+      </pre>
+    </li>
+
+    <li>
+      Add a middleware by calling the `setup` function.
+      <pre>
+app.use(font_middleware.setup({
+  fonts: [ opensans ],
+  allow_origin: "https://exampledomain.com",
+  ua: "all",
+  maxage: 180 * 24 * 60 * 60 * 1000   // 180 days
+}));
+      </pre>
+
+      <dl>
+        <dt>fonts</dt>
+        <dd>array of font packs</dd>
+        <dt>allow_origin</dt>
+        <dd>origin to set in the Access-Control-Allow-Origin header</dd>
+        <dt>ua</dt>
+        <dd>force a user-agent. "all" means serve up all font types to all
+        users. If not specified, the user's user-agent header will be used to
+        send the user only the fonts that their user-agent support.</dd>
+        <dt>maxage</dt>
+        <dd>provide a max-age in milliseconds for http caching, defaults to
+        0.</dd>
+      </dl>
+    </li>
+
+    <li>
+      Add a link tag to include the font CSS.
+      To serve a default, non-locale specific font, include a CSS link that contains the name of the font:
+      <pre>
+&lt;link href="/opensans-regular/fonts.css" type="text/css" rel="stylesheet"/ &gt;
+      </pre>
+    </li>
+
+    <li>
+      Set your CSS up to use the new font by using the correct font-family.
+      <pre>
+body {
+  font-family: 'Open Sans', 'sans-serif', 'serif';
+}
+      </pre>
+    </li>
+
+  </ol>
+
+<h2>Advanced Usage</h2>
+
+<h3>Locale optimised fonts</h3>
+  If a font pack contains locale optimised fonts, these can be requested by prepending
+  the locale name before the font list in the fonts.css request.
+  </pre>html
+&lt;link href="/en/opensans-regular/fonts.css" type="text/css" rel="stylesheet"/ &gt;
+  </pre>
+  `scripts/subset` from [connect-fonts-tools](https://github.com/shane-tomlinson/connect-fonts-tools) can be used to create locale-optimised subsets.
+
+
+<h3>Programatically generate CSS for use in build steps</h3>
+  One of the easiest ways to speed up your site is to minimize the number of resources that are requested. The @font-face CSS provided by fonts.css can be fetched programatically and concatinated with other site CSS during a build step.
+  </pre>js
+// font_middleware.setup has already been called.
+// `ua` - user agent. Use 'all' for a CSS bundle that is compatible with all browsers.
+// `lang` - language. generate_css can be called once for each served language, or
+//            "default" can be specified
+// `fonts` - array of font names - e.g. ["opensans-regular", "opensans-italics"]
+font_middleware.generate_css(ua, lang, fonts, function(err, css) {
+  var css_output_path = path.join(output_dir, dep);
+  var css_output_dir = path.dirname(css_output_path);
+
+  // create any missing directories.
+  mkdirp.sync(css_output_dir);
+
+  // finally, write out the file.
+  fs.writeFileSync(css_output_path, css.css, "utf8");
+});
+  </pre>
+
+<h3>Direct access to font files</h3>
+  Once the middleware setup function is called, a map of URLs=>paths can be retreived using font_middleware.urlToPaths. This information can be used in a build step for tools like [connect-cachify](https://github.com/mozilla/connect-cachify/) that need access to the font file to create an caching hash.
+
+
+<h2>Creating a Font Pack</h2>
+  A font pack is an npm module like any other node library. Creating a new font pack is similar to creating any npm module.
+
+  <ol>
+    <li>
+      Install [connect-fonts-tools](https://github.com/shane-tomlinson/connect-fonts-tools) and run its `scripts/setup` utility.
+      <pre>
+npm install connect-fonts-tools
+cd node_modules/connect-fonts-tools
+./scripts/setup
+      </pre>
+    </li>
+
+    <li>
+      Create a font pack target directory
+      <pre>
+mkdir &lt;target_path&gt;
+      </pre>
+    </li>
+
+    <li>
+      Call ``scripts/create_fontpack`` from connect-font-tools with the source directory, the target directory, and the pack name.
+      <pre>
+connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; --sp &lt;source_path&gt; --tp &lt;target_path&gt;
+      </pre>
+      If the font pack is for public use, specify the additional parameters to be placed inside the font pack's package.json and README.md files.
+      <pre>
+connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; --ph &lt;pack_homepage_url&gt; --pr &lt;pack_repo_url&gt; --pb &lt;pack_bugtracker_url&gt; --sp &lt;source_path&gt; --tp &lt;target_path&gt;
+      </pre>
+    </li>
+
+    <li>
+      Check your font pack.
+      ``script/check_font_pack.js`` is a basic font pack linter. It will check whether pack configuration is sane and if all expected font files are available. To use it, call ``check_font_pack.js`` with the absolute path to the font pack's configuration file.
+      <pre>
+script/check_font_pack.js ~/development/connect-fonts-opensans/index.js
+      </pre>
+    </li>
+
+    <li>
+      <p>
+        If the font pack is for public use, publish it to the npm repository
+        <pre>
+cd &lt;target_path&gt;
+npm publish
+        </pre>
+      </p>
+    </li>
+
+    <li>
+      <p>
+        Install the pack using npm into your project:
+        <pre>
+npm install &lt;pack_name&gt;
+        </pre>
+      </p>
+      <p>
+        If the font pack is not to be published to the npm repository, it can be installed to another local project directory:
+        <pre>
+cd &lt;target_project_dir&gt;
+npm install &lt;font_pack_directory&gt;
+        </pre>
+      </p>
+    </li>
+  </ol>
+
+<h2>Author</h2>
+<ul>
+  <li>Shane Tomlinson</li>
+  <li><a href="mailto:shane@shanetomlinson.com">shane@shanetomlinson.com</a></li>
+  <li><a href="mailto:stomlinson@mozilla.com">stomlinson@mozilla.com</a></li>
+  <li><a href="mailto:set117@yahoo.com">set117@yahoo.com</a></li>
+  <li><a href="https://shanetomlinson.com">https://shanetomlinson.com</a></li>
+  <li><a href="https://github.com/shane-tomlinson">https://github.com/shane-tomlinson</a></li>
+  <li><a href="https://github.com/stomlinson">https://github.com/stomlinson</a></li>
+  <li>@shane_tomlinson</li>
+</ul>
+
+<h2>Getting involved</h2>
+  MOAR font packs! See [connect-fonts-tools](https://github.com/shane-tomlinson/connect-fonts-tools) for tools to make this easy. [connect-fonts-opensans](https://github.com/shane-tomlinson/connect-fonts-opensans) is an example of a finished font pack.
+
+  Any updates to connect-fonts are appreciated. All submissions will be reviewed and considered for merge.
+
+<h2>License</h2>
+  This software is available under version 2.0 of the MPL:
+
+  <p>
+    https://www.mozilla.org/MPL/
+  </p>
+
+
 {% endblock %}
 

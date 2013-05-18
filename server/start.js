@@ -7,6 +7,7 @@ const fontpack_opensans
                       = require('connect-fonts-opensans');
 const app             = express();
 
+const IP_ADDRESS      = process.env.IP_ADDRESS || "127.0.0.1";
 const PORT            = process.env.PORT || 3000;
 
 const TEMPLATE_PATH   = path.join(__dirname, 'views');
@@ -34,6 +35,6 @@ app.get('/', function (req, res) {
   res.render('index.html', { foo: 'bar' });
 });
 
-console.log("Listening on port", PORT);
-app.listen(PORT);
+console.log("Listening on", IP_ADDRESS + ":" + PORT);
+app.listen(PORT, IP_ADDRESS);
 

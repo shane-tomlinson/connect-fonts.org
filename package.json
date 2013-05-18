@@ -24,7 +24,8 @@
     "consolidate": "0.9.1"
   },
   "devDependencies": {
-    "nodeunit": "0.7.4"
+    "nodeunit": "0.7.4",
+    "awsbox": "0.4.4"
   },
   "scripts": {
     "start": "node server/start.js",
