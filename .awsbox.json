@@ -1,4 +1,4 @@
 {
-  "processes": [ "node ./server/start.js" ]
+  "processes": [ "./server/start.js" ]
 }
 
