@@ -32,30 +32,43 @@ h2, h3, h4, h5, h6 {
   margin-bottom: 0.75em;
 }
 
-h1 {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  padding: 0 0 0 150px;
+header, footer {
   background-color: #000;
   color: #fff;
 }
 
+header {
+  padding: 0 0 0 150px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+footer {
+  font-size: .8em;
+  padding: 0.5em 0;
+  text-align: center;
+}
+
 @media screen and (max-width: 1000px) {
-  h1 {
+  header, footer {
     padding-left: 50px;
   }
 }
 
 @media screen and (max-width: 800px) {
-  h1 {
+  header, footer {
     padding-left: 10px;
   }
 }
 
+footer a {
+  color: #999;
+}
+
 pre, code {
-  font: 20px/1.5 "Source Sans Pro", Sans-Serif, Serif;
+  font: 20px/1.5 "Roboto", Sans-Serif, Serif;
 }
 
 pre {
@@ -68,5 +81,16 @@ pre {
 
 code {
   font-style: italic;
+}
+
+dt {
+  float: left;
+  width: 25%;
+  font-weight: bold;
+}
+
+dd {
+  float: left;
+  width: 75%;
 }
 

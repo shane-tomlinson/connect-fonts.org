@@ -20,7 +20,7 @@
     "express": "3.2.4",
     "connect-fonts": "0.0.9-beta1",
     "connect-fonts-opensans": "0.0.3-beta1",
-    "connect-fonts-sourcesanspro": "0.0.1",
+    "connect-fonts-roboto": "0.0.1",
     "swig": "0.13.5",
     "consolidate": "0.9.1"
   },

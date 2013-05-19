@@ -7,13 +7,25 @@
 
   {% block head %}
     <link rel="stylesheet"
-    href="/en/opensans-regular,sourcesanspro-regular,sourcesanspro-italic/fonts.css" />
+    href="/en/opensans-regular,roboto-regular/fonts.css" />
     <link rel="stylesheet" href="/css/style.css" />
   {% endblock %}
 </head>
 <body>
+  <header>
+    <h1>Connect-fonts</h1>
+  </header>
+
   <main>
     {% block content %}{% endblock %}
   </main>
+
+  <footer>
+    Site created by <a href="https://github.com/shane-tomlinson"
+    target="_blank">Shane Tomlinson</a>,
+    licensed under the MPL 2.0 - Source availale @ <a
+    href="https://github.com/shane-tomlinson/connect-fonts.org"
+    target="_blank">GitHub</a>.
+  </footer>
 </body>
 </html>

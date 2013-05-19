@@ -5,8 +5,8 @@ const path            = require('path');
 const connect_fonts   = require('connect-fonts');
 const fontpack_opensans
                       = require('connect-fonts-opensans');
-const fontpack_sourcesanspro
-                      = require('connect-fonts-sourcesanspro');
+const fontpack_roboto
+                      = require('connect-fonts-roboto');
 const app             = express();
 
 const IP_ADDRESS      = process.env.IP_ADDRESS || "127.0.0.1";
@@ -27,7 +27,7 @@ swig.init({
 app.set('views', TEMPLATE_PATH);
 
 app.use(connect_fonts.setup({
-  fonts: [ fontpack_opensans, fontpack_sourcesanspro ],
+  fonts: [ fontpack_opensans, fontpack_roboto ],
   allow_origin: "*",
   maxage: 180 * 24 * 60 * 60 * 1000,   // 180 days
   ua: 'all'
