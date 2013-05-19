@@ -18,16 +18,14 @@
   <p>
     The middleware looks for requests (expressed in Express terminology):
     <pre>
-/:font-list/fonts.css
-    </pre>
+/:font-list/fonts.css</pre>
   </p>
 
 
   <p>
     An example of a match is:
     <pre>
-/opensans-regular,opensans-italics/fonts.css
-    </pre>
+/opensans-regular,opensans-italics/fonts.css</pre>
   </p>
 
   <p>
@@ -39,26 +37,22 @@
     <li>
       Install the middleware
       <pre>
-npm install connect-fonts
-      </pre>
+npm install connect-fonts</pre>
     </li>
     <li>
       Install a font-pack
       <pre>
-npm install connect-fonts-opensans
-      </pre>
+npm install connect-fonts-opensans</pre>
     <li>
       Include connect-fonts in your node code.
       <pre>
-const font_middleware = require("connect-fonts");
-      </pre>
+const font_middleware = require("connect-fonts");</pre>
     </li>
 
     <li>
       Include the font packs that you want to serve.
       <pre>
-const opensans = require("connect-fonts-opensans");
-      </pre>
+const opensans = require("connect-fonts-opensans");</pre>
     </li>
 
     <li>
@@ -69,8 +63,7 @@ app.use(font_middleware.setup({
   allow_origin: "https://exampledomain.com",
   ua: "all",
   maxage: 180 * 24 * 60 * 60 * 1000   // 180 days
-}));
-      </pre>
+}));</pre>
 
       <dl>
         <dt>fonts</dt>
@@ -91,8 +84,7 @@ app.use(font_middleware.setup({
       To serve a default, non-locale specific font, include a CSS link that contains the name of the font:
       <pre>
 &lt;link href="/opensans-regular/fonts.css" type="text/css"
-    rel="stylesheet"/ &gt;
-      </pre>
+    rel="stylesheet"/ &gt;</pre>
     </li>
 
     <li>
@@ -100,8 +92,7 @@ app.use(font_middleware.setup({
       <pre>
 body {
   font-family: 'Open Sans', 'sans-serif', 'serif';
-}
-      </pre>
+}</pre>
     </li>
 
   </ol>
@@ -111,9 +102,9 @@ body {
 <h3>Locale optimised fonts</h3>
   If a font pack contains locale optimised fonts, these can be requested by prepending
   the locale name before the font list in the fonts.css request.
-  </pre>html
-&lt;link href="/en/opensans-regular/fonts.css" type="text/css" rel="stylesheet"/ &gt;
-  </pre>
+  <pre>
+&lt;link href="/en/opensans-regular/fonts.css" type="text/css"
+    rel="stylesheet"/ &gt;</pre>
   <code>scripts/subset</code> from <a href="https://github.com/shane-tomlinson/connect-fonts-tools" target="_blank">connect-fonts-tools</a> can be used to create locale-optimised subsets.
 
 
@@ -137,8 +128,7 @@ font_middleware.generate_css(ua, lang, fonts, function(err, css) {
 
   // finally, write out the file.
   fs.writeFileSync(css_output_path, css.css, "utf8");
-});
-  </pre>
+});</pre>
 
 <h3>Direct access to font files</h3>
   Once the middleware setup function is called, a map of URLs=>paths can be
@@ -156,29 +146,25 @@ font_middleware.generate_css(ua, lang, fonts, function(err, css) {
       <pre>
 npm install connect-fonts-tools
 cd node_modules/connect-fonts-tools
-./scripts/setup
-      </pre>
+./scripts/setup</pre>
     </li>
 
     <li>
       Create a font pack target directory
       <pre>
-mkdir &lt;target_path&gt;
-      </pre>
+mkdir &lt;target_path&gt;</pre>
     </li>
 
     <li>
       Call <code>scripts/create_fontpack</code> from connect-font-tools with the source directory, the target directory, and the pack name.
       <pre>
 connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; \
-    --sp &lt;source_path&gt; --tp &lt;target_path&gt;
-      </pre>
+    --sp &lt;source_path&gt; --tp &lt;target_path&gt;</pre>
       If the font pack is for public use, specify the additional parameters to be placed inside the font pack's package.json and README.md files.
       <pre>
 connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; \
     --ph &lt;pack_homepage_url&gt; --pr &lt;pack_repo_url&gt; \
-    --pb &lt;pack_bugtracker_url&gt; --sp &lt;source_path&gt; --tp &lt;target_path&gt;
-      </pre>
+    --pb &lt;pack_bugtracker_url&gt; --sp &lt;source_path&gt; --tp &lt;target_path&gt;</pre>
     </li>
 
     <li>
@@ -187,8 +173,7 @@ connect-fonts-tools/scripts/create_fontpack --pn &lt;pack_name&gt; \
       will check whether pack configuration is sane and if all expected font
       files are available. To use it, call <code>check_font_pack.js</code> with the absolute path to the font pack's configuration file.
       <pre>
-script/check_font_pack.js ~/development/connect-fonts-opensans/index.js
-      </pre>
+script/check_font_pack.js ~/development/connect-fonts-opensans/index.js</pre>
     </li>
 
     <li>
@@ -196,8 +181,7 @@ script/check_font_pack.js ~/development/connect-fonts-opensans/index.js
         If the font pack is for public use, publish it to the npm repository
         <pre>
 cd &lt;target_path&gt;
-npm publish
-        </pre>
+npm publish</pre>
       </p>
     </li>
 
@@ -205,15 +189,13 @@ npm publish
       <p>
         Install the pack using npm into your project:
         <pre>
-npm install &lt;pack_name&gt;
-        </pre>
+npm install &lt;pack_name&gt;</pre>
       </p>
       <p>
         If the font pack is not to be published to the npm repository, it can be installed to another local project directory:
         <pre>
 cd &lt;target_project_dir&gt;
-npm install &lt;font_pack_directory&gt;
-        </pre>
+npm install &lt;font_pack_directory&gt;</pre>
       </p>
     </li>
   </ol>
