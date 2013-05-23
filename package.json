@@ -18,7 +18,7 @@
   "main": "index",
   "dependencies": {
     "express": "3.2.4",
-    "connect-fonts": "0.0.9-beta1",
+    "connect-fonts": "git://github.com/shane-tomlinson/connect-fonts.git#f284e8da68cb606cf72a4eb58441e32ff0416d1e",
     "connect-fonts-opensans": "0.0.3-beta1",
     "connect-fonts-roboto": "0.0.2",
     "swig": "0.13.5",
