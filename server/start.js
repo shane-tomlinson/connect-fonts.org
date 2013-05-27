@@ -30,6 +30,7 @@ app.use(connect_fonts.setup({
   fonts: [ fontpack_opensans, fontpack_roboto ],
   allow_origin: "*",
   maxage: 180 * 24 * 60 * 60 * 1000,   // 180 days
+  compress: true,
   ua: 'all'
 }));
 
