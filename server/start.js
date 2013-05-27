@@ -28,7 +28,7 @@ app.set('views', TEMPLATE_PATH);
 
 app.use(connect_fonts.setup({
   fonts: [ fontpack_opensans, fontpack_roboto ],
-  allow_origin: "*",
+  allow_origin: "http://www.connect-fonts.org",
   maxage: 180 * 24 * 60 * 60 * 1000,   // 180 days
   compress: true,
   ua: 'all'
