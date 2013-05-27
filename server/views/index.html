@@ -59,7 +59,8 @@ const opensans = require("connect-fonts-opensans");</pre>
 app.use(font_middleware.setup({
   fonts: [ opensans ],
   allow_origin: "https://exampledomain.com",
-  maxage: 180 * 24 * 60 * 60 * 1000   // 180 days
+  maxage: 180 * 24 * 60 * 60 * 1000,   // 180 days
+  compress: true
 }));</pre>
 
       <dl>
@@ -69,6 +70,8 @@ app.use(font_middleware.setup({
         <dd>origin to set in the Access-Control-Allow-Origin header</dd>
         <dt>maxage</dt>
         <dd>provide a max-age in milliseconds for http caching, defaults to 0.</dd>
+        <dt>compress</dt>
+        <dd>If true, compresses CSS and compressable fonts</dd>
         <dt>ua</dt>
         <dd><em>(optional)</em> force a user-agent. "all" means serve up all font types to all
         users. If not specified, the user's user-agent header will be used to
