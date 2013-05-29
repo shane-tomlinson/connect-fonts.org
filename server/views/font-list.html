@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+  {% parent %}
+  <link href="/{{ fontNames }}/fonts.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+  <h2>Font list</h2>
+
+
+  <ul class="fontlist">
+  {% for item in fonts %}
+    <li class="{{ loop.cycle('odd', 'even') }}" style="font-family: {{ item.fontFamily }}; font-weight: {{ item.fontWeight }}; font-style: {{ item.fontStyle }};">
+      <a href="/font/{{ loop.key }}">{{ loop.key }}</a></li>
+  {% endfor %}
+  </ul>
+{% endblock %}
+
+

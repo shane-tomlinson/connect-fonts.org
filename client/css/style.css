@@ -27,6 +27,10 @@ main {
   }
 }
 
+h1 {
+  font-weight: normal;
+}
+
 h2, h3, h4, h5, h6 {
   margin-top: 1.3em;
   margin-bottom: 0.75em;
@@ -49,6 +53,10 @@ footer {
   font-size: .8em;
   padding: 0.5em 0;
   text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 @media screen and (max-width: 1000px) {
@@ -92,5 +100,20 @@ dt {
 dd {
   float: left;
   width: 75%;
+}
+
+.fontlist, .fontlist li {
+  list-style-type: none;
+}
+
+.fontlist a {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px dotted #333;
+}
+
+.fontlist a:hover {
+  color: #339;
+  border-bottom: 1px dotted #339;
 }
 
