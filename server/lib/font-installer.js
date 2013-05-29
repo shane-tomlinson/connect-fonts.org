@@ -4,6 +4,7 @@
 
 const npm           = require("npm");
 const path          = require("path");
+const util          = require("./util");
 const dependencies  = require(path.join(__dirname, '..', '..', 'package.json')).dependencies;
 
 /**
@@ -15,6 +16,10 @@ const PACKAGE_BLACKLIST = [
   "connect-fonts-tools",
   "connect-fonts-example"
 ];
+
+function shouldInstallPackage(packageName) {
+  return !(dependencies[packageName] || PACKAGE_BLACKLIST.indexOf(packageName) > -1);
+}
 
 /**
  * Load new fonts from the npmjs.org repository
@@ -36,23 +41,23 @@ exports.load = function(done) {
 
       console.log(packageNames.length + " potential font packs found");
 
-      installNext();
-      function installNext() {
-        var packageName = packageNames.shift();
-        if (!packageName) return done(null, installedPackages);
-
+      util.asyncForEach(packageNames, function(packageName, index, next) {
         console.log(packageName);
-        if (dependencies[packageName] || PACKAGE_BLACKLIST.indexOf(packageName) > -1) return installNext();
+        if ( ! shouldInstallPackage(packageName)) return next();
 
         dependencies[packageName] = true;
 
         npm.commands.install([packageName], function(err) {
           if (err) return done(err);
 
+          // XXX once the font is installed, use an event emitter to signal to
+          // some other unit that it can display the new font.
           installedPackages.push(packageName);
-          installNext();
+          next();
         });
-      }
+      }, function(err) {
+        done(err, !err && installedPackages);
+      });
     });
   });
 };

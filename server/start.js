@@ -9,6 +9,7 @@ const fontpack_roboto
                       = require('connect-fonts-roboto');
 const fontpack_installer
                       = require('./lib/font-installer');
+const util            = require('./lib/util');
 const app             = express();
 
 const IP_ADDRESS      = process.env.IP_ADDRESS || "127.0.0.1";
@@ -40,17 +41,10 @@ function refreshFonts(done) {
   fontpack_installer.load(function(err, newFonts) {
     if (err) return done(err);
 
-    registerNext();
-
-    function registerNext(err) {
-      if (err) return done(err);
-
-      var fontName = newFonts.shift();
-      if (!fontName) return done(null);
-
+    util.asyncForEach(newFonts, function(fontName, index, next) {
       var fontPack = require(fontName);
-      connect_fonts.registerFontPack(fontPack, registerNext);
-    }
+      connect_fonts.registerFontPack(fontPack, next);
+    }, done);
   });
 }
 refreshFonts(function() {});
