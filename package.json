@@ -18,11 +18,12 @@
   "main": "index",
   "dependencies": {
     "express": "3.2.4",
-    "connect-fonts": "0.0.9",
+    "connect-fonts": "git://github.com/shane-tomlinson/connect-fonts.git#8146bce",
     "connect-fonts-opensans": "0.0.3-beta1",
     "connect-fonts-roboto": "0.0.2",
     "swig": "0.13.5",
-    "consolidate": "0.9.1"
+    "consolidate": "0.9.1",
+    "npm": "1.2.23"
   },
   "devDependencies": {
     "nodeunit": "0.7.4",
