@@ -63,6 +63,11 @@ app.get('/fonts', function (req, res) {
   });
 });
 
+app.get('/fonts/reload', function(req, res) {
+  refreshFonts(function() {});
+  res.redirect('/fonts');
+});
+
 app.get('/font/:name', function (req, res) {
   var fontName = req.params.name;
   var fontConfig = connect_fonts.fontConfigs[fontName];

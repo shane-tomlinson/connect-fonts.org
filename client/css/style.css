@@ -104,6 +104,7 @@ dd {
 
 .fontlist, .fontlist li {
   list-style-type: none;
+  margin-top: .3em;
 }
 
 .fontlist a {
