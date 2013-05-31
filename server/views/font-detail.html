@@ -3,44 +3,61 @@
 {% block head %}
   {% parent %}
   <link href="/en/{{ font.name }}/fonts.css" rel="stylesheet"/>
+  <style>
+  .sampletext {
+    font-family: {{ font.fontFamily }};
+    font-weight: {{ font.fontWeight }};
+    font-style: {{ font.fontStyle }};
+  }
+  </style>
 {% endblock %}
 
 {% block content %}
-  <h2 style="font-family: {{ font.fontFamily }}; font-weight: {{ font.fontWeight }}; font-style: {{ font.fontStyle }};" class="sampletext">
+
+  <h2 class="sampletext">
   {{ font.name }}
+  </h2>
   {% if font.packConfig.package.name %}
     {% if font.packConfig.package.homepage %}
-      <small>from: <a href="{{ font.packConfig.package.homepage }}"
+      <h3 class="sampletext">from: <a href="{{ font.packConfig.package.homepage }}"
         target="_blank">{{ font.packConfig.package.name }}</a>
-      </small>
+      </h3>
     {% else %}
-      <small>from: <a href="https://npmjs.org/package/{{ font.packConfig.package.name }}"
+      <h3 class="sampletext">from: <a href="https://npmjs.org/package/{{ font.packConfig.package.name }}"
         target="_blank">{{ font.packConfig.package.name }}</a>
-      </small>
+      </h3>
     {% endif %}
   {% endif %}
-  </h2>
 
 
   <section class="samples">
 
-    <p style="font-family: {{ font.fontFamily }}; font-weight: {{ font.fontWeight }}; font-style: {{ font.fontStyle }};" class="sampletext large">
+    <p class="sampletext large">
     Grumpy wizards make toxic brew for the evil Queen and Jack. (36px)
     </p>
 
-    <p style="font-family: {{ font.fontFamily }}; font-weight: {{ font.fontWeight }}; font-style: {{ font.fontStyle }};" class="sampletext">
+    <p class="sampletext">
     Grumpy wizards make toxic brew for the evil Queen and Jack. (24px)
     </p>
 
-    <p style="font-family: {{ font.fontFamily }}; font-weight: {{ font.fontWeight }}; font-style: {{ font.fontStyle }};" class="sampletext medium">
+    <p class="sampletext medium">
     Grumpy wizards make toxic brew for the evil Queen and Jack. (18px)
     </p>
 
-    <p style="font-family: {{ font.fontFamily }}; font-weight: {{ font.fontWeight }}; font-style: {{ font.fontStyle }};" class="sampletext small">
+    <p class="sampletext small">
     Grumpy wizards make toxic brew for the evil Queen and Jack. (12px)
     </p>
 
   </section>
+  </div>
+
+  {% if font.packConfig.font_common || font.packConfig.package || font.packConfig.author %}
+    <section class="fontinfo viewextended">
+      <a href="#extendedinfo">View extended info</a>
+    </section>
+
+    <div id="extendedinfo">&nbsp;</div>
+  {% endif %}
 
   {% if font.packConfig.font_common %}
     <section class="fontinfo font_common">

@@ -81,7 +81,6 @@ app.get('/font/:name', function (req, res) {
       fontConfig.packConfig.author.githubs = fontConfig.packConfig.author.githubs.split(',');
     } catch(e) {}
 
-    console.log(JSON.stringify(fontConfig, null, 2));
     res.render('font-detail.html', {
       font: fontConfig
     });

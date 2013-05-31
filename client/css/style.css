@@ -131,6 +131,7 @@ dd {
 h2.sampletext {
   font-size: 56px;
   margin: 0;
+  line-height: 1.2em;
 }
 
 .sampletext.large {
@@ -143,6 +144,28 @@ h2.sampletext {
 
 .sampletext.small {
   font-size: 12px;
+}
+
+/**
+ * Push the first bit of fontinfo off the screen. This allows readers to still
+ * see it, but it does not clutter up the initial viewing of the font
+ */
+
+.viewextended {
+  margin: 3em 0 100% 0;
+  text-align: center;
+}
+
+.viewextended a {
+  font-size: .8em;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px dotted #333;
+}
+
+.viewextended a:hover {
+  color: #339;
+  border-bottom: 1px dotted #339;
 }
 
 .fontinfo {
