@@ -1,17 +1,33 @@
 {% extends 'layout.html' %}
 
+{% block title %}connect-fonts - font list{% endblock %}
+
 {% block head %}
   {% parent %}
   <link href="/en/{{ fontNames }}/fonts.css" rel="stylesheet"/>
+  <style>
+  <!-- creates one class for each font -->
+  {% for item in fonts %}
+    .{{ loop.key }} {
+      font-family: {{ item.fontFamily }};
+      font-weight: {{ item.fontWeight }};
+      font-style: {{ item.fontStyle }};
+    }
+  {% endfor %}
+  </style>
 {% endblock %}
 
-{% block content %}
-  <h2>Font list</h2>
+<!-- do not call the parent -->
+{% block navitems %}
+{% endblock %}
 
+
+{% block content %}
+  <h2 class="nomargin">Font list</h2>
 
   <ul class="fontlist">
   {% for item in fonts %}
-    <li class="{{ loop.cycle('odd', 'even') }}" style="font-family: {{ item.fontFamily }}; font-weight: {{ item.fontWeight }}; font-style: {{ item.fontStyle }};">
+    <li class="{{ loop.key }}">
       <a href="/font/{{ loop.key }}">{{ loop.key }}</a></li>
   {% endfor %}
   </ul>

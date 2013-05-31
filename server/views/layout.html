@@ -13,10 +13,26 @@
 </head>
 <body>
   <header>
-    <h1>Connect-fonts</h1>
+    <h1><a href="/">Connect-fonts</a></h1>
+    <h2>Connect/Express Font Serving Middleware</h2>
   </header>
 
-  <main>
+  <nav>
+    {% block nav %}
+      <ul>
+        {% block navitems %}
+          <li>
+            <a href="/fonts">Font List</a>
+          </li>
+        {% endblock %}
+        <li>
+          <a href="#top">Top</a>
+        </li>
+      </ul>
+    {% endblock %}
+  </nav>
+
+  <main id="top">
     {% block content %}{% endblock %}
   </main>
 

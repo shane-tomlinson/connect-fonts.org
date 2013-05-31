@@ -14,15 +14,57 @@ html, body {
   font: 20px/1.5 "Open Sans", "Helvetica", Sans-Serif, Serif;
 }
 
+nav {
+  width: 700px;
+  margin: 150px auto 50px;
+  text-align: center;
+}
+
+nav li {
+  display: inline;
+}
+
+
+nav ul, nav li {
+  list-style-type: none;
+}
+
+@media screen and (min-width: 1175px) {
+  nav {
+    position: fixed;
+    top: 0;
+    right: 50px;
+    display: block;
+    width: 200px;
+    text-align: right;
+  }
+
+  nav li {
+    display: block;
+  }
+}
+
+nav a {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px dotted;
+  font-size: 14px;
+}
+
 main {
   display: block;
   width: 700px;
-  margin: 0 auto;
-  padding: 150px 0;
+  margin: 0 auto 150px;
+}
+
+@media screen and (min-width: 1175px) {
+  main {
+    padding-top: 150px;
+  }
 }
 
 @media screen and (max-width: 720px) {
-  main {
+  main, nav {
     width: 90%;
   }
 }
@@ -71,6 +113,41 @@ footer {
   }
 }
 
+
+header h1, header h2 {
+  display: inline;
+}
+
+
+header h2:before {
+  content: '-';
+  margin: 0 .5em;
+}
+
+@media screen and (max-width: 690px) {
+  header h1, header h2 {
+    display: block;
+  }
+
+  header h2 {
+    margin-top: 0;
+  }
+
+  header h2:before {
+    content: none;
+  }
+}
+
+
+header h2 {
+  font-size: .9em;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
+}
+
 footer a {
   color: #999;
 }
@@ -100,6 +177,10 @@ dt {
 dd {
   float: left;
   width: 75%;
+}
+
+.nomargin {
+  margin: 0;
 }
 
 .fontlist, .fontlist li {

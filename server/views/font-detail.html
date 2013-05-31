@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
 
+{% block title %}connect-fonts - {{ font.name }}{% endblock %}
+
 {% block head %}
   {% parent %}
   <link href="/en/{{ font.name }}/fonts.css" rel="stylesheet"/>
@@ -11,6 +13,16 @@
   }
   </style>
 {% endblock %}
+
+{% block navitems %}
+  {% parent %}
+  {% if font.packConfig.font_common || font.packConfig.package || font.packConfig.author %}
+    <li>
+      <a href="#extendedinfo">View extended info</a>
+    </li>
+  {% endif %}
+{% endblock %}
+
 
 {% block content %}
 

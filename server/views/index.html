@@ -5,6 +5,35 @@
   {% parent %}
 {% endblock %}
 
+{% block navitems %}
+  {% parent %}
+  <li>
+    <a href="#usage">Usage</a>
+  </li>
+  <li>
+    <a href="#localeoptimised">Locale Optimised Fonts</a>
+  </li>
+  <li>
+    <a href="#generatecss">Generate CSS Programatically</a>
+  </li>
+  <li>
+    <a href="#createfontpack">Creating a Fontpack</a>
+  </li>
+  <li>
+    <a href="#code">Code</a>
+  </li>
+  <li>
+    <a href="#author">Author</a>
+  </li>
+  <li>
+    <a href="#getinvolved">Getting involved</a>
+  </li>
+  <li>
+    <a href="#license">License</a>
+  </li>
+{% endblock %}
+
+
 {% block content %}
   <p>
   <a href="https://github.com/shane-tomlinson/connect-fonts"
@@ -30,7 +59,7 @@
     When a match is made, connect-fonts generates a CSS response with @font-face declarations tailored to the user's browser.
   </p>
 
-  <h2>Usage</h2>
+  <h2 id="usage">Usage</h2>
   <ol>
     <li>
       Install the middleware
@@ -99,7 +128,7 @@ body {
 
 <h2>Advanced Usage</h2>
 
-<h3>Locale optimised fonts</h3>
+<h3 id="localeoptimised">Locale optimised fonts</h3>
   Locale optimised fonts can be requested by prepending
   the locale name before the font list in the fonts.css request.
   <pre>
@@ -109,7 +138,7 @@ body {
   Locale optimised fonts are included with some font packs, but if not, <code>scripts/subset</code> from <a href="https://github.com/shane-tomlinson/connect-fonts-tools" target="_blank">connect-fonts-tools</a> can be used to create them.
 
 
-<h3>Programatically generate CSS for use in build steps</h3>
+<h3 id="generatecss">Programatically generate CSS for use in build steps</h3>
   One of the easiest ways to speed up your site is to minimize the number of
   external resources that are requested. The @font-face CSS provided by
   fonts.css can be generated programatically and concatinated with other site CSS during a build step.
@@ -139,7 +168,7 @@ font_middleware.generate_css(ua, lang, fonts, function(err, css) {
   href="https://github.com/mozilla/connect-cachify/" target="_blank">connect-cachify</a> that need access to the font file to create a caching hash.
 
 
-<h2>Creating a Font Pack</h2>
+<h2 id="createfontpack">Creating a Font Pack</h2>
   A font pack is an npm module like any other node library. Creating a new font pack is similar to creating any npm module.
 
   <ol>
@@ -193,10 +222,10 @@ npm install &lt;font_pack_directory&gt;</pre>
     </li>
   </ol>
 
-<h2>Code</h2>
+<h2 id="code">Code</h2>
 The source is available on GitHub at <a href="https://github.com/shane-tomlinson/connect-fonts">https://github.com/shane-tomlinson/connect-fonts</a>. The npm module can be installed using <code>npm install connect-fonts</code>.
 
-<h2>Author</h2>
+<h2 id="author">Author</h2>
 <ul>
   <li>Shane Tomlinson</li>
   <li><a href="mailto:shane@shanetomlinson.com">shane@shanetomlinson.com</a></li>
@@ -208,7 +237,7 @@ The source is available on GitHub at <a href="https://github.com/shane-tomlinson
   <li>@shane_tomlinson</li>
 </ul>
 
-<h2>Getting involved</h2>
+<h2 id="getinvolved">Getting involved</h2>
   MOAR font packs! See <a
   href="https://github.com/shane-tomlinson/connect-fonts-tools"
   target="_blank">connect-fonts-tools</a> for tools to make font pack creation
@@ -217,7 +246,7 @@ The source is available on GitHub at <a href="https://github.com/shane-tomlinson
 
   Any updates to connect-fonts are appreciated. All submissions will be reviewed and considered for merge.
 
-<h2>License</h2>
+<h2 id="license">License</h2>
   This software is available under version 2.0 of the MPL:
 
   <p>
