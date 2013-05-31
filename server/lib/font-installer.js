@@ -69,7 +69,8 @@ function registerFontPack(packageName, done) {
     dependencies[packageName] = true;
     fontMiddleware.registerFontPack(fontPack, done);
   } catch(e) {
-    done(e);
+    console.log("could not install", packageName, ":", String(e));
+    done(null);
   }
 }
 
