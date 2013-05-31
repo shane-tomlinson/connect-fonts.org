@@ -4,8 +4,11 @@
 
 const npm           = require("npm");
 const path          = require("path");
+const matchmodule   = require('matchmodule');
 const util          = require("./util");
 const dependencies  = require(path.join(__dirname, '..', '..', 'package.json')).dependencies;
+
+const PACKAGE_QUERY = "connect-fonts-";
 
 /**
  * A list of packages with the connect-fonts prefix that should
@@ -17,47 +20,73 @@ const PACKAGE_BLACKLIST = [
   "connect-fonts-example"
 ];
 
+var fontMiddleware;
+
 function shouldInstallPackage(packageName) {
   return !(dependencies[packageName] || PACKAGE_BLACKLIST.indexOf(packageName) > -1);
 }
 
+exports.setup = function(options, done) {
+  options = options || {};
+  fontMiddleware = options.fontMiddleware;
+  done(null);
+};
+
+function registerFontPack(packageName, done) {
+  try {
+    var fontPack = require(packageName);
+    dependencies[packageName] = true;
+    fontMiddleware.registerFontPack(fontPack, done);
+  } catch(e) {
+    done(e);
+  }
+}
+
+/**
+ * Load font packs already installed in the node_modules directory
+ * @method loadInstalled
+ * @param {function} done
+ */
+exports.loadInstalled = function(done) {
+  console.log("searching for installed fonts");
+  var packageNames = matchmodule.filter(PACKAGE_QUERY + '*');
+  console.log(packageNames.length + " potential installed font packs found");
+
+  util.asyncForEach(packageNames, function(packageName, index, next) {
+    console.log(packageName);
+    if ( ! shouldInstallPackage(packageName)) return next();
+
+    registerFontPack(packageName, next);
+  }, done);
+};
+
 /**
  * Load new fonts from the npmjs.org repository
- * @method load
+ * @method loadNew
  * @param {function} done
- *     called with two parameters, err and a list of new font packages.
  */
-exports.load = function(done) {
-  console.log("searching for fonts");
+exports.loadNew = function(done) {
+  console.log("searching for new fonts on npm");
   npm.load(function(err) {
     if (err) return done(err);
 
-    var query = "connect-fonts-";
-    npm.commands.search(query, true, function(err, packages) {
+    npm.commands.search(PACKAGE_QUERY, true, function(err, packages) {
       if (err) return done(err);
 
       var packageNames = Object.keys(packages);
-      var installedPackages = [];
 
-      console.log(packageNames.length + " potential font packs found");
+      console.log(packageNames.length + " potential npm font packs found");
 
       util.asyncForEach(packageNames, function(packageName, index, next) {
         console.log(packageName);
         if ( ! shouldInstallPackage(packageName)) return next();
 
-        dependencies[packageName] = true;
-
         npm.commands.install([packageName], function(err) {
           if (err) return done(err);
 
-          // XXX once the font is installed, use an event emitter to signal to
-          // some other unit that it can display the new font.
-          installedPackages.push(packageName);
-          next();
+          registerFontPack(packageName, next);
         });
-      }, function(err) {
-        done(err, !err && installedPackages);
-      });
+      }, done);
     });
   });
 };

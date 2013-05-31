@@ -37,17 +37,20 @@ app.use(connect_fonts.setup({
   ua: 'all'
 }));
 
-function refreshFonts(done) {
-  fontpack_installer.load(function(err, newFonts) {
-    if (err) return done(err);
+// Force a refresh of the font list.
+fontpack_installer.setup({
+  fontMiddleware: connect_fonts
+}, function(err) {
+  if (err) return err;
 
-    util.asyncForEach(newFonts, function(fontName, index, next) {
-      var fontPack = require(fontName);
-      connect_fonts.registerFontPack(fontPack, next);
-    }, done);
+  fontpack_installer.loadInstalled(function(err) {
+    if (err) return err;
+
+    fontpack_installer.loadNew(function(err) {
+      if (err) return err;
+    });
   });
-}
-refreshFonts(function() {});
+});
 
 app.use(express.static(STATIC_PATH));
 
