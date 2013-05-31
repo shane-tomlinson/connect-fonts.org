@@ -39,17 +39,10 @@ app.use(connect_fonts.setup({
 
 // Force a refresh of the font list.
 fontpack_installer.setup({
-  fontMiddleware: connect_fonts
+  fontMiddleware: connect_fonts,
+  updateIntervalMins: 5
 }, function(err) {
   if (err) return err;
-
-  fontpack_installer.loadInstalled(function(err) {
-    if (err) return err;
-
-    fontpack_installer.loadNew(function(err) {
-      if (err) return err;
-    });
-  });
 });
 
 app.use(express.static(STATIC_PATH));
@@ -67,7 +60,7 @@ app.get('/fonts', function (req, res) {
 });
 
 app.get('/fonts/reload', function(req, res) {
-  refreshFonts(function() {});
+  fontpack_installer.loadNew();
   res.redirect('/fonts');
 });
 

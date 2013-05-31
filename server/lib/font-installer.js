@@ -4,9 +4,10 @@
 
 const npm           = require("npm");
 const path          = require("path");
-const matchmodule   = require('matchmodule');
+const matchmodule   = require("matchmodule");
 const util          = require("./util");
-const dependencies  = require(path.join(__dirname, '..', '..', 'package.json')).dependencies;
+const timebot       = require("timebot");
+const dependencies  = require(path.join(__dirname, "..", "..", "package.json")).dependencies;
 
 const PACKAGE_QUERY = "connect-fonts-";
 
@@ -26,10 +27,40 @@ function shouldInstallPackage(packageName) {
   return !(dependencies[packageName] || PACKAGE_BLACKLIST.indexOf(packageName) > -1);
 }
 
+function getUpdateMinutes(updateIntervalMins) {
+  updateIntervalMins = updateIntervalMins || 10;
+  var updateTimes = [];
+
+  for (var i = 0; i < 60; ++i) {
+    if ((i % updateIntervalMins) === 0) {
+      updateTimes.push(i);
+    }
+  }
+
+  return updateTimes.join(',');
+}
+
 exports.setup = function(options, done) {
   options = options || {};
   fontMiddleware = options.fontMiddleware;
-  done(null);
+
+  exports.loadInstalled(function(err) {
+    if (err) return done(err);
+    exports.loadNew(function(err) {
+      if (err) return done(err);
+
+      // Refresh the font list from npm every updateIntervalMins
+      timebot.set({
+        path: 'load new fonts',
+        minute: getUpdateMinutes(options.updateIntervalMins)
+      }, {
+        cron: function() {
+          console.log("refreshing font list");
+          exports.loadNew();
+        }
+      });
+    });
+  });
 };
 
 function registerFontPack(packageName, done) {
