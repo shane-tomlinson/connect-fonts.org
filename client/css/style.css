@@ -29,7 +29,11 @@ nav ul, nav li {
   list-style-type: none;
 }
 
-@media screen and (min-width: 1175px) {
+.widescreen {
+  display: none;
+}
+
+@media screen and (min-width: 1220px) {
   nav {
     position: fixed;
     top: 0;
@@ -40,6 +44,10 @@ nav ul, nav li {
   }
 
   nav li {
+    display: block;
+  }
+
+  .widescreen {
     display: block;
   }
 }
@@ -57,7 +65,7 @@ main {
   margin: 0 auto 150px;
 }
 
-@media screen and (min-width: 1175px) {
+@media screen and (min-width: 1220px) {
   main {
     padding-top: 150px;
   }
