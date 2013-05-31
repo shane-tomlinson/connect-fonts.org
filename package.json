@@ -20,7 +20,7 @@
     "express": "3.2.4",
     "connect-fonts": "git://github.com/shane-tomlinson/connect-fonts.git#dc26916",
     "connect-fonts-opensans": "git://github.com/shane-tomlinson/connect-fonts-opensans.git#bba11c7",
-    "connect-fonts-roboto": "0.0.3",
+    "connect-fonts-roboto": "0.0.4",
     "swig": "0.13.5",
     "consolidate": "0.9.1",
     "npm": "1.2.24",
