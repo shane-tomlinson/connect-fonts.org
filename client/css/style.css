@@ -118,3 +118,37 @@ dd {
   border-bottom: 1px dotted #339;
 }
 
+.samples {
+  margin: 1em 0;
+}
+
+.sampletext {
+  font-size: 24px;
+  line-height: 1.5em;
+  margin-bottom: 1em;
+}
+
+h2.sampletext {
+  font-size: 56px;
+  margin: 0;
+}
+
+.sampletext.large {
+  font-size: 36px;
+}
+
+.sampletext.medium {
+  font-size: 18px;
+}
+
+.sampletext.small {
+  font-size: 12px;
+}
+
+.fontinfo {
+  font-size: 18px;
+}
+
+.fontinfo td:first-child {
+  min-width: 175px;
+}

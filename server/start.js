@@ -23,7 +23,8 @@ app.set('view engine', 'html');
 
 swig.init({
   root: TEMPLATE_PATH,
-  allowErrors: true
+  allowErrors: true,
+  cache: false
 });
 
 
@@ -68,8 +69,19 @@ app.get('/font/:name', function (req, res) {
   var fontName = req.params.name;
   var fontConfig = connect_fonts.fontConfigs[fontName];
   if (fontConfig) {
+    fontConfig = util.deepCopy(fontConfig);
     fontConfig.name = fontName;
+    try {
+      fontConfig.packConfig.author.urls = fontConfig.packConfig.author.urls.split(',');
+    } catch(e) {}
+    try {
+      fontConfig.packConfig.author.emails = fontConfig.packConfig.author.emails.split(',');
+    } catch(e) {}
+    try {
+      fontConfig.packConfig.author.githubs = fontConfig.packConfig.author.githubs.split(',');
+    } catch(e) {}
 
+    console.log(JSON.stringify(fontConfig, null, 2));
     res.render('font-detail.html', {
       font: fontConfig
     });

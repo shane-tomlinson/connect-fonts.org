@@ -17,4 +17,11 @@ exports.asyncForEach = function(array, cb, done) {
   }
 };
 
+exports.deepCopy = function(toCopy) {
+  return JSON.parse(JSON.stringify(toCopy));
+};
+
+exports.split = function(toSplit, splitOn) {
+  return toSplit.split(splitOn);
+}
 
