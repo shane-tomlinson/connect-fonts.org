@@ -9,7 +9,7 @@
   <!-- creates one class for each font -->
   {% for item in fonts %}
     .{{ loop.key }} {
-      font-family: {{ item.fontFamily }};
+      font-family: "{{ item.fontFamily }}";
       font-weight: {{ item.fontWeight }};
       font-style: {{ item.fontStyle }};
     }
