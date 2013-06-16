@@ -20,6 +20,9 @@
     <li>
       <a href="#extendedinfo">View extended info</a>
     </li>
+    <li>
+      <a href="#settext">Set example text</a>
+    </li>
   {% endif %}
 {% endblock %}
 
@@ -45,19 +48,19 @@
   <section class="samples">
 
     <p class="sampletext large">
-    Grumpy wizards make toxic brew for the evil Queen and Jack. (36px)
+    {{ sampletext }} (36px)
     </p>
 
     <p class="sampletext">
-    Grumpy wizards make toxic brew for the evil Queen and Jack. (24px)
+    {{ sampletext }} (24px)
     </p>
 
     <p class="sampletext medium">
-    Grumpy wizards make toxic brew for the evil Queen and Jack. (18px)
+    {{ sampletext }} (18px)
     </p>
 
     <p class="sampletext small">
-    Grumpy wizards make toxic brew for the evil Queen and Jack. (12px)
+    {{ sampletext }} (12px)
     </p>
 
   </section>
@@ -254,6 +257,26 @@
       </table>
     </section>
   {% endif %}
+
+  <div id="settext" class="lightbox">
+    <div class="lightbox-centerer">
+      <div class="lightbox-content">
+        <div>
+          <a class="lightbox-close right" href="#">Close</a>
+          <h3 class="lightbox-title">Set sample text</h3>
+        </div>
+
+        <form action="/sampletext" method="post">
+          <textarea class="lightbox-textarea" name="sampletext">{{ sampletext }}</textarea>
+          <button class="lightbox-submit">Set sample text</button>
+        </form>
+
+        <form action="/delete-sampletext" method="post">
+          <button class="lightbox-submit">Use default</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
 
 {% endblock %}

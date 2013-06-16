@@ -18,6 +18,9 @@ const PORT            = process.env.PORT || 3000;
 const TEMPLATE_PATH   = path.join(__dirname, 'views');
 const STATIC_PATH     = path.join(__dirname, '..', 'client');
 
+const DEFAULT_SAMPLE_TEXT
+                      = "Grumpy wizards make toxic brew for the evil Queen and Jack.";
+
 app.engine('.html', cons.swig);
 app.set('view engine', 'html');
 
@@ -46,6 +49,8 @@ fontpack_installer.setup({
   if (err) return err;
 });
 
+app.use(express.cookieParser());
+app.use(express.bodyParser());
 app.use(express.static(STATIC_PATH));
 
 app.get('/', function (req, res) {
@@ -65,6 +70,24 @@ app.get('/fonts/reload', function(req, res) {
   res.redirect('/fonts');
 });
 
+// Set the users sample text.
+app.post('/sampletext', function(req, res) {
+  var sampleText = req.body.sampletext;
+  if (sampleText) {
+    res.cookie('sampletext', sampleText, {
+      path: '/font',
+      expires: new Date(Date.now() + 900000),
+      httpOnly: true
+    });
+    res.redirect(303, req.headers.referer);
+  }
+});
+
+app.post('/delete-sampletext', function(req, res) {
+  res.clearCookie('sampletext', { path: '/font' });
+  res.redirect(303, req.headers.referer);
+});
+
 app.get('/font/:name', function (req, res) {
   var fontName = req.params.name;
   var fontConfig = connect_fonts.fontConfigs[fontName];
@@ -82,13 +105,20 @@ app.get('/font/:name', function (req, res) {
     } catch(e) {}
 
     res.render('font-detail.html', {
-      font: fontConfig
+      font: fontConfig,
+      sampletext: getSampleText(req)
     });
   }
   else {
     res.send("Unknown font", 404);
   }
 });
+
+function getSampleText(req) {
+  var sampleText = req.cookies && req.cookies.sampletext;
+  if (!sampleText) sampleText = DEFAULT_SAMPLE_TEXT;
+  return sampleText;
+}
 
 console.log("Listening on", IP_ADDRESS + ":" + PORT);
 app.listen(PORT);//, IP_ADDRESS);
