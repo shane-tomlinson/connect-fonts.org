@@ -258,7 +258,7 @@
     </section>
   {% endif %}
 
-  <div id="settext" class="lightbox">
+  <aside id="settext" class="lightbox">
     <div class="lightbox-centerer">
       <div class="lightbox-content">
         <div>
@@ -268,15 +268,15 @@
 
         <form action="/sampletext" method="post">
           <textarea class="lightbox-textarea" name="sampletext">{{ sampletext }}</textarea>
-          <button class="lightbox-submit">Set sample text</button>
+          <button class="lightbox-submit right">Set sample text</button>
         </form>
 
         <form action="/delete-sampletext" method="post">
-          <button class="lightbox-submit">Use default</button>
+          <button class="lightbox-submit left">Use default</button>
         </form>
       </div>
     </div>
-  </div>
+  </aside>
 
 
 {% endblock %}
