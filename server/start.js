@@ -57,16 +57,86 @@ app.get('/', function (req, res) {
   res.render('index.html', {});
 });
 
+/**
+ * Get font configurations by family. Each family will contain an array of
+ * fonts.
+ */
+var families;
+function getFamilies(fontConfigs) {
+  if (families) return families;
+
+  // Sort fonts into families
+  families = {};
+  for (var fontName in fontConfigs) {
+    var fontConfig = fontConfigs[fontName];
+    fontConfig.name = fontName;
+
+    var family = fontConfig.fontFamily;
+
+    if (!families[family])
+      families[family] = {};
+
+    families[family][fontName] = fontConfig;
+  }
+
+
+  return families;
+}
+
+function getRegularFontsForFamilies(families) {
+  // Find the "regular" font for each family
+  var bestRegulars = {};
+  for (var familyName in families) {
+    var family = families[familyName];
+    var bestRegularName = getRegularFontForFamily(family);
+    var bestRegular = family[bestRegularName];
+
+    bestRegular.cssname = bestRegularName;
+    bestRegular.familyName = familyName;
+
+    bestRegulars[bestRegularName] = bestRegular;
+  }
+
+  return bestRegulars;
+}
+
+function getRegularFontForFamily(family) {
+  var fontNames = Object.keys(family);
+  // try to find the best match.
+  var bestRegular = fontNames.reduce(function(bestRegular, fontName) {
+    var fontConfig = family[fontName];
+    if (fontConfig === bestRegular) return fontName;
+
+    if (fontConfig.fontWeight === 400 && fontConfig.fontStyle === "normal") {
+      // If an exact match.
+      return fontName;
+    }
+    else if (Math.abs(fontConfig.fontWeight - 400) < Math.abs(bestRegular.fontWeight - 400)) {
+      // Otherwise, look for the closest font weight.
+      return fontName;
+    }
+
+    return bestRegular;
+  }, family[fontNames[0]]);
+
+  return bestRegular;
+}
+
+
 app.get('/fonts', function (req, res) {
-  var fontNames = Object.keys(connect_fonts.fontConfigs).join(",");
+  var families = getFamilies(connect_fonts.fontConfigs);
+  var familyExampleFonts = getRegularFontsForFamilies(families);
+  var cssNames = Object.keys(familyExampleFonts).join(",");
+
   res.render('font-list.html', {
-    fontNames: fontNames,
-    fonts: connect_fonts.fontConfigs
+    cssNames: cssNames,
+    families: familyExampleFonts
   });
 });
 
 app.get('/fonts/reload', function(req, res) {
   fontpack_installer.loadNew();
+  families = null;
   res.redirect('/fonts');
 });
 
@@ -86,6 +156,23 @@ app.post('/sampletext', function(req, res) {
 app.post('/delete-sampletext', function(req, res) {
   res.clearCookie('sampletext', { path: '/font' });
   res.redirect(303, req.headers.referer);
+});
+
+app.get('/family/:name', function (req, res) {
+  var familyName = req.params.name;
+  var familyConfig = getFamilies(connect_fonts.fontConfigs)[familyName];
+
+  if (familyConfig) {
+    familyConfig = util.deepCopy(familyConfig);
+    var fontNames = Object.keys(familyConfig).join(",");
+    res.render('family-detail.html', {
+      fontNames: fontNames,
+      fonts: familyConfig
+    });
+  }
+  else {
+    res.send("Unknown font", 404);
+  }
 });
 
 app.get('/font/:name', function (req, res) {
