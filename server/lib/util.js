@@ -23,5 +23,9 @@ exports.deepCopy = function(toCopy) {
 
 exports.split = function(toSplit, splitOn) {
   return toSplit.split(splitOn);
-}
+};
+
+exports.print = function(object) {
+  console.log(JSON.stringify(object, null, 2));
+};
 

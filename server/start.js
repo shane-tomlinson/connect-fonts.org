@@ -9,6 +9,7 @@ const fontpack_roboto
                       = require('connect-fonts-roboto');
 const fontpack_installer
                       = require('./lib/font-installer');
+const font_packs      = require('./lib/font-packs');
 const util            = require('./lib/util');
 const app             = express();
 
@@ -41,12 +42,18 @@ app.use(connect_fonts.setup({
   ua: 'all'
 }));
 
+font_packs.setup({
+  fontConfigs: connect_fonts.fontConfigs
+});
+
 // Force a refresh of the font list.
 fontpack_installer.setup({
   fontMiddleware: connect_fonts,
-  updateIntervalMins: 5
+  updateIntervalMins: 10
 }, function(err) {
   if (err) return err;
+
+  font_packs.update(connect_fonts.fontConfigs);
 });
 
 app.use(express.cookieParser());
@@ -57,88 +64,53 @@ app.get('/', function (req, res) {
   res.render('index.html', {});
 });
 
-/**
- * Get font configurations by family. Each family will contain an array of
- * fonts.
- */
-var families;
-function getFamilies(fontConfigs) {
-  if (families) return families;
+app.get('/families', function (req, res) {
+  font_packs.getFamilies(function(err, families) {
+    var cssNames = Object.keys(families).join(",");
 
-  // Sort fonts into families
-  families = {};
-  for (var fontName in fontConfigs) {
-    var fontConfig = fontConfigs[fontName];
-    fontConfig.name = fontName;
-
-    var family = fontConfig.fontFamily;
-
-    if (!families[family])
-      families[family] = {};
-
-    families[family][fontName] = fontConfig;
-  }
-
-
-  return families;
-}
-
-function getRegularFontsForFamilies(families) {
-  // Find the "regular" font for each family
-  var bestRegulars = {};
-  for (var familyName in families) {
-    var family = families[familyName];
-    var bestRegularName = getRegularFontForFamily(family);
-    var bestRegular = family[bestRegularName];
-
-    bestRegular.cssname = bestRegularName;
-    bestRegular.familyName = familyName;
-
-    bestRegulars[bestRegularName] = bestRegular;
-  }
-
-  return bestRegulars;
-}
-
-function getRegularFontForFamily(family) {
-  var fontNames = Object.keys(family);
-  // try to find the best match.
-  var bestRegular = fontNames.reduce(function(bestRegular, fontName) {
-    var fontConfig = family[fontName];
-    if (fontConfig === bestRegular) return fontName;
-
-    if (fontConfig.fontWeight === 400 && fontConfig.fontStyle === "normal") {
-      // If an exact match.
-      return fontName;
-    }
-    else if (Math.abs(fontConfig.fontWeight - 400) < Math.abs(bestRegular.fontWeight - 400)) {
-      // Otherwise, look for the closest font weight.
-      return fontName;
-    }
-
-    return bestRegular;
-  }, family[fontNames[0]]);
-
-  return bestRegular;
-}
-
-
-app.get('/fonts', function (req, res) {
-  var families = getFamilies(connect_fonts.fontConfigs);
-  var familyExampleFonts = getRegularFontsForFamilies(families);
-  var cssNames = Object.keys(familyExampleFonts).join(",");
-
-  res.render('font-list.html', {
-    cssNames: cssNames,
-    families: familyExampleFonts
+    res.render('family-list.html', {
+      cssNames: cssNames,
+      fonts: families
+    });
   });
 });
 
-app.get('/fonts/reload', function(req, res) {
+app.get('/family/:name', function (req, res) {
+  var familyName = req.params.name;
+  font_packs.getFamily(familyName, function(err, familyConfig) {
+    if (err || !familyConfig) {
+      return res.send("Unknown font", 404);
+    }
+
+    var cssNames = familyConfig.cssNames;
+    if (cssNames.length === 1) {
+      // if there is only one font in the family, redirect
+      // straight to that font.
+      res.redirect('/font/' + cssNames[0]);
+    }
+    else {
+      res.render('family-detail.html', familyConfig);
+    }
+  });
+});
+
+app.get('/font/:name', function (req, res) {
+  var fontName = req.params.name;
+  font_packs.getFont(fontName, function(err, fontConfig) {
+    if (err || !fontConfig) return res.send("unknown font", 404);
+
+    res.render('font-detail.html', {
+      font: fontConfig,
+      sampletext: getSampleText(req)
+    });
+  });
+});
+
+app.get('/reload', function(req, res) {
   fontpack_installer.loadNew();
-  families = null;
   res.redirect('/fonts');
 });
+
 
 // Set the users sample text.
 app.post('/sampletext', function(req, res) {
@@ -158,48 +130,6 @@ app.post('/delete-sampletext', function(req, res) {
   res.redirect(303, req.headers.referer);
 });
 
-app.get('/family/:name', function (req, res) {
-  var familyName = req.params.name;
-  var familyConfig = getFamilies(connect_fonts.fontConfigs)[familyName];
-
-  if (familyConfig) {
-    familyConfig = util.deepCopy(familyConfig);
-    var fontNames = Object.keys(familyConfig).join(",");
-    res.render('family-detail.html', {
-      fontNames: fontNames,
-      fonts: familyConfig
-    });
-  }
-  else {
-    res.send("Unknown font", 404);
-  }
-});
-
-app.get('/font/:name', function (req, res) {
-  var fontName = req.params.name;
-  var fontConfig = connect_fonts.fontConfigs[fontName];
-  if (fontConfig) {
-    fontConfig = util.deepCopy(fontConfig);
-    fontConfig.name = fontName;
-    try {
-      fontConfig.packConfig.author.urls = fontConfig.packConfig.author.urls.split(',');
-    } catch(e) {}
-    try {
-      fontConfig.packConfig.author.emails = fontConfig.packConfig.author.emails.split(',');
-    } catch(e) {}
-    try {
-      fontConfig.packConfig.author.githubs = fontConfig.packConfig.author.githubs.split(',');
-    } catch(e) {}
-
-    res.render('font-detail.html', {
-      font: fontConfig,
-      sampletext: getSampleText(req)
-    });
-  }
-  else {
-    res.send("Unknown font", 404);
-  }
-});
 
 function getSampleText(req) {
   var sampleText = req.cookies && req.cookies.sampletext;

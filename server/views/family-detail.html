@@ -1,14 +1,13 @@
 {% extends 'layout.html' %}
 
-{% block title %}connect-fonts - family list{% endblock %}
+{% block title %}connect-fonts - font list{% endblock %}
 
 {% block head %}
   {% parent %}
   <link href="/en/{{ cssNames }}/fonts.css" rel="stylesheet"/>
   <style>
-  <!-- creates one class for each font -->
-  {% for item in families %}
-    .{{ item.cssname }} {
+  {% for item in fonts %}
+    .{{ loop.key }} {
       font-family: "{{ item.fontFamily }}";
       font-weight: {{ item.fontWeight }};
       font-style: {{ item.fontStyle }};
@@ -23,14 +22,16 @@
 
 
 {% block content %}
-  <h2 class="nomargin">Family list</h2>
+  <h2 class="nomargin">Font list</h2>
 
   <ul class="fontlist">
-  {% for item in families %}
-    <li class="{{ item.cssname }}">
-      <a href="/family/{{ item.familyName }}">{{ item.familyName }}</a></li>
+  {% for item in fonts %}
+    <li class="{{ loop.key }}">
+      <a href="/font/{{ loop.key }}">{{ loop.key }}</a></li>
   {% endfor %}
   </ul>
+
+  {% include "partials/font-extended-info.html" %}
 {% endblock %}
 
 
