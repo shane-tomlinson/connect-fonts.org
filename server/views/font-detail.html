@@ -6,7 +6,7 @@
   {% parent %}
   <link href="/en/{{ font.name }}/fonts.css" rel="stylesheet"/>
   <style>
-  .sampletext {
+  .{{ font.name }} {
     font-family: "{{ font.fontFamily }}";
     font-weight: {{ font.fontWeight }};
     font-style: {{ font.fontStyle }};
@@ -18,74 +18,49 @@
   {% parent %}
   {% if font.packConfig.font_common || font.packConfig.package || font.packConfig.author %}
     <li>
-      <a href="#extendedinfo">View extended info</a>
+      <a class="underline" href="#extendedinfo">View extended info</a>
     </li>
   {% endif %}
   <li>
-    <a href="#settext">Set example text</a>
+    <a class="underline" href="#settext">Set example text</a>
   </li>
 {% endblock %}
 
 
 {% block content %}
 
-  <h2 class="sampletext">
+  <h2 class="nomargin {{ font.name }}">
   {{ font.name }}
   </h2>
-  {% if font.packConfig.package.name %}
-    {% if font.packConfig.package.homepage %}
-      <h3 class="sampletext">from: <a href="{{ font.packConfig.package.homepage }}"
-        target="_blank">{{ font.packConfig.package.name }}</a>
-      </h3>
-    {% else %}
-      <h3 class="sampletext">from: <a href="https://npmjs.org/package/{{ font.packConfig.package.name }}"
-        target="_blank">{{ font.packConfig.package.name }}</a>
-      </h3>
-    {% endif %}
-  {% endif %}
+  {% include "partials/package-info.html" with font %}
 
 
   <section class="samples">
 
-    <p class="sampletext large">
-    {{ sampletext }} (36px)
+    <h4>36px</h4>
+    <p class="sampletext large {{ font.name }}">
+    {{ sampletext }}
     </p>
 
-    <p class="sampletext">
-    {{ sampletext }} (24px)
+    <h4>24px</h4>
+    <p class="sampletext {{ font.name }}">
+    {{ sampletext }}
     </p>
 
-    <p class="sampletext medium">
-    {{ sampletext }} (18px)
+    <h4>18px</h4>
+    <p class="sampletext medium {{ font.name }}">
+    {{ sampletext }}
     </p>
 
-    <p class="sampletext small">
-    {{ sampletext }} (12px)
+    <h4>12px</h4>
+    <p class="sampletext small {{ font.name }}">
+    {{ sampletext }}
     </p>
 
   </section>
 
-  {% include "partials/font-extended-info.html" with font %}
-
-  <aside id="settext" class="lightbox">
-    <div class="lightbox-centerer">
-      <div class="lightbox-content">
-        <div>
-          <a class="lightbox-close right" href="#">Close</a>
-          <h3 class="lightbox-title">Set sample text</h3>
-        </div>
-
-        <form action="/sampletext" method="post">
-          <textarea class="lightbox-textarea" name="sampletext">{{ sampletext }}</textarea>
-          <button class="lightbox-submit right">Set sample text</button>
-        </form>
-
-        <form action="/delete-sampletext" method="post">
-          <button class="lightbox-submit left">Use default</button>
-        </form>
-      </div>
-    </div>
-  </aside>
+  {% include "partials/family-info.html" with font %}
+  {% include "partials/set-example-text.html" %}
 
 
 {% endblock %}

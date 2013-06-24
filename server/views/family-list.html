@@ -27,7 +27,7 @@
   <ul class="fontlist">
   {% for item in fonts %}
     <li class="{{ item.cssname }}">
-      <a href="/family/{{ item.familyName }}">{{ item.familyName }}</a></li>
+      <a class="underline" href="/family/{{ item.familyName }}">{{ item.familyName }}</a></li>
   {% endfor %}
   </ul>
 {% endblock %}

@@ -89,6 +89,8 @@ app.get('/family/:name', function (req, res) {
       res.redirect('/font/' + cssNames[0]);
     }
     else {
+      util.print(Object.keys(familyConfig.packConfig.font_common));
+      familyConfig.sampletext = getSampleText(req);
       res.render('family-detail.html', familyConfig);
     }
   });
@@ -117,7 +119,6 @@ app.post('/sampletext', function(req, res) {
   var sampleText = req.body.sampletext;
   if (sampleText) {
     res.cookie('sampletext', sampleText, {
-      path: '/font',
       expires: new Date(Date.now() + 900000),
       httpOnly: true
     });
@@ -126,7 +127,7 @@ app.post('/sampletext', function(req, res) {
 });
 
 app.post('/delete-sampletext', function(req, res) {
-  res.clearCookie('sampletext', { path: '/font' });
+  res.clearCookie('sampletext', {});
   res.redirect(303, req.headers.referer);
 });
 

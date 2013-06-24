@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}connect-fonts - font list{% endblock %}
+{% block title %}connect-fonts - {{ packConfig.font_common.family }}{% endblock %}
 
 {% block head %}
   {% parent %}
@@ -18,20 +18,36 @@
 
 <!-- do not call the parent -->
 {% block navitems %}
+  {% parent %}
+  {% if font.packConfig.font_common || font.packConfig.package || font.packConfig.author %}
+    <li>
+      <a href="#extendedinfo">View extended info</a>
+    </li>
+  {% endif %}
+  <li>
+    <a href="#settext">Set example text</a>
+  </li>
 {% endblock %}
 
 
 {% block content %}
-  <h2 class="nomargin">Font list</h2>
+  <h2 class="nomargin">{{ packConfig.font_common.family }}</h2>
+  {% include "partials/package-info.html" %}
 
   <ul class="fontlist">
   {% for item in fonts %}
     <li class="{{ loop.key }}">
-      <a href="/font/{{ loop.key }}">{{ loop.key }}</a></li>
+      <h4><a href="/font/{{ loop.key }}">{{ loop.key }}</a></h3>
+
+      <p class="sampletext">
+      {{ sampletext }}
+      </p>
+    </li>
   {% endfor %}
   </ul>
 
-  {% include "partials/font-extended-info.html" %}
+  {% include "partials/family-info.html" %}
+  {% include "partials/set-example-text.html" %}
 {% endblock %}
 
 
