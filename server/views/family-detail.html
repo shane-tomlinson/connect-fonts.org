@@ -19,13 +19,13 @@
 <!-- do not call the parent -->
 {% block navitems %}
   {% parent %}
-  {% if font.packConfig.font_common || font.packConfig.package || font.packConfig.author %}
+  {% if packConfig.font_common || packConfig.package || packConfig.author %}
     <li>
-      <a href="#extendedinfo">View extended info</a>
+      <a class="underline" href="#extendedinfo">View extended info</a>
     </li>
   {% endif %}
   <li>
-    <a href="#settext">Set example text</a>
+    <a class="underline" href="#settext">Set example text</a>
   </li>
 {% endblock %}
 
