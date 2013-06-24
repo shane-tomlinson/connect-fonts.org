@@ -89,7 +89,6 @@ app.get('/family/:name', function (req, res) {
       res.redirect('/font/' + cssNames[0]);
     }
     else {
-      util.print(Object.keys(familyConfig.packConfig.font_common));
       familyConfig.sampletext = getSampleText(req);
       res.render('family-detail.html', familyConfig);
     }
