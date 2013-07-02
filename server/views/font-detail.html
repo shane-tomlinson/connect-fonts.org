@@ -15,6 +15,11 @@
 {% endblock %}
 
 {% block navitems %}
+  {% if font.packConfig.count > 1 %}
+    <li>
+      <a class="underline" href="/family/{{ font.fontFamily }}">{{ font.fontFamily }}</a>
+    </li>
+  {% endif %}
   {% parent %}
   {% if font.packConfig.font_common || font.packConfig.package || font.packConfig.author %}
     <li>

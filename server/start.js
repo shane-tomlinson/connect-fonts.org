@@ -70,7 +70,8 @@ app.get('/families', function (req, res) {
 
     res.render('family-list.html', {
       cssNames: cssNames,
-      fonts: families
+      fonts: families,
+      sampletext: getSampleText(req)
     });
   });
 });

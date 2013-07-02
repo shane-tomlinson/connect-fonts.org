@@ -90,6 +90,7 @@ exports.getFamilies = function(done) {
 
       bestRegular.cssname = bestRegularName;
       bestRegular.familyName = familyName;
+      bestRegular.count = Object.keys(family).length;
 
       bestRegulars[bestRegularName] = bestRegular;
     });
@@ -106,6 +107,7 @@ exports.getFont = function(fontName, done) {
   if (!fontConfig) return done(null, null);
 
   fontConfig = cleanupFontConfig(util.deepCopy(fontConfig));
+  fontConfig.packConfig.count = Object.keys(fontConfig.packConfig.fonts).length;
   fontConfig.name = fontName;
   done(null, fontConfig);
 };

@@ -18,6 +18,9 @@
 
 <!-- do not call the parent -->
 {% block navitems %}
+  <li>
+    <a class="underline" href="#settext">Set example text</a>
+  </li>
 {% endblock %}
 
 
@@ -26,10 +29,21 @@
 
   <ul class="fontlist">
   {% for item in fonts %}
-    <li class="{{ item.cssname }}">
-      <a class="underline" href="/family/{{ item.familyName }}">{{ item.familyName }}</a></li>
+    <li>
+      <h4>
+        <a class="underline {{ item.cssname }}"
+          title="{{ item.familyName }} {% if item.packConfig.font_common.designer %}by {{ item.packConfig.font_common.designer }} {% endif %}"
+          href="/family/{{ item.familyName }}">{{ item.familyName }}</a>
+        ({{ item.count }} style{% if item.count != 1 %}s{% endif %})
+      </h4>
+      <p class="sampletext {{ item.cssname }}">
+      {{ sampletext }}
+      </p>
+    </li>
   {% endfor %}
   </ul>
+
+  {% include "partials/set-example-text.html" %}
 {% endblock %}
 
 
