@@ -1,7 +1,11 @@
 const express         = require('express');
 const cons            = require('consolidate');
 const swig            = require('swig');
+const url             = require('url');
 const path            = require('path');
+const fs              = require('fs');
+const http            = require('http');
+const spdy            = require('spdy');
 const connect_fonts   = require('connect-fonts');
 const fontpack_opensans
                       = require('connect-fonts-opensans');
@@ -11,13 +15,17 @@ const fontpack_installer
                       = require('./lib/font-installer');
 const font_packs      = require('./lib/font-packs');
 const util            = require('./lib/util');
+
 const app             = express();
 
 const IP_ADDRESS      = process.env.IP_ADDRESS || "127.0.0.1";
-const PORT            = process.env.PORT || 3000;
+const HTTP_PORT       = process.env.HTTP_PORT || 3000;
+const SSL_PORT        = process.env.SSL_PORT || 3433;
 
 const TEMPLATE_PATH   = path.join(__dirname, 'views');
 const STATIC_PATH     = path.join(__dirname, '..', 'client');
+
+const SSL_CERT_PATH   = path.join(__dirname, '..', 'cert');
 
 const DEFAULT_SAMPLE_TEXT
                       = "Grumpy wizards make toxic brew for the evil Queen and Jack.";
@@ -33,6 +41,22 @@ swig.init({
 
 
 app.set('views', TEMPLATE_PATH);
+
+// Redirect all http traffic to https
+app.use(function(req, res, next) {
+ if(!req.secure) {
+    var urlObj = url.parse(req.protocol + "://" + req.get('Host') + req.url);
+    if (urlObj.host.indexOf(":" + HTTP_PORT) > -1) {
+      urlObj.host = urlObj.host.replace(":" + HTTP_PORT, ":" + SSL_PORT);
+    }
+    urlObj.protocol = "https";
+
+    var redirectTo = url.format(urlObj);
+    res.redirect(redirectTo, 301);
+  } else {
+    next();
+  }
+});
 
 app.use(connect_fonts.setup({
   fonts: [ fontpack_opensans, fontpack_roboto ],
@@ -138,6 +162,17 @@ function getSampleText(req) {
   return sampleText;
 }
 
-console.log("Listening on", IP_ADDRESS + ":" + PORT);
-app.listen(PORT);//, IP_ADDRESS);
+var spdy_options = {
+  key: fs.readFileSync(path.join(SSL_CERT_PATH, 'connect-fonts.org.key')),
+  cert: fs.readFileSync(path.join(SSL_CERT_PATH, 'connect-fonts.org.crt')),
+  ca: fs.readFileSync(path.join(SSL_CERT_PATH, 'connect-fonts.org.csr'))
+};
+
+console.log("HTTP Server listening on", IP_ADDRESS + ":" + HTTP_PORT);
+var httpServer = http.createServer(app);
+httpServer.listen(HTTP_PORT);
+
+console.log("HTTPS Server listening on", IP_ADDRESS + ":" + SSL_PORT);
+var spdyServer = spdy.createServer(spdy_options, app);
+spdyServer.listen(SSL_PORT);
 
