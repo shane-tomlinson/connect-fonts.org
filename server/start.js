@@ -83,7 +83,7 @@ fontpack_installer.setup({
 
 app.use(express.cookieParser());
 app.use(express.bodyParser());
-helmet.defaults(app);
+helmet.defaults(app, { cacheControl: false });
 
 app.use(express.static(STATIC_PATH));
 
