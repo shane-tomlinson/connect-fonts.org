@@ -25,7 +25,8 @@
     "consolidate": "0.9.1",
     "npm": "1.2.24",
     "matchmodule": "0.1.1",
-    "timebot": "0.0.1"
+    "timebot": "0.0.1",
+    "helmet": "0.1.0"
   },
   "devDependencies": {
     "nodeunit": "0.7.4",

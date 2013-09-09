@@ -6,6 +6,7 @@ const path            = require('path');
 const fs              = require('fs');
 const http            = require('http');
 const spdy            = require('spdy');
+const helmet          = require('helmet');
 const connect_fonts   = require('connect-fonts');
 const fontpack_opensans
                       = require('connect-fonts-opensans');
@@ -82,6 +83,8 @@ fontpack_installer.setup({
 
 app.use(express.cookieParser());
 app.use(express.bodyParser());
+helmet.defaults(app);
+
 app.use(express.static(STATIC_PATH));
 
 app.get('/', function (req, res) {
