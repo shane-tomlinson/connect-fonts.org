@@ -11,8 +11,12 @@
 html, body {
   width: 100%;
   height: 100%;
-  font: 20px/1.5 "Open Sans", "Helvetica", Sans-Serif, Serif;
+  font: 20px/1.5 "Quicksand", "Helvetica", Sans-Serif, Serif;
   color: #000;
+}
+
+p {
+  margin-bottom: 1rem;
 }
 
 .left {
@@ -36,6 +40,10 @@ nav li {
 
 nav ul, nav li {
   list-style-type: none;
+}
+
+ol li {
+  margin-bottom: 1em;
 }
 
 a {

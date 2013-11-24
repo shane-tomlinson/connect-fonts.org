@@ -2,7 +2,13 @@
   "Author": "Shane Tomlinson <shane@shanetomlinson.com> (https://shanetomlinson.com)",
   "name": "connectfonts.org",
   "description": "connectfonts.org homepage",
-  "keywords": ["font", "font-face", "CSS", "connectfonts.org", "connect-fonts"],
+  "keywords": [
+    "font",
+    "font-face",
+    "CSS",
+    "connectfonts.org",
+    "connect-fonts"
+  ],
   "homepage": "https://github.com/shane-tomlinson/connectfonts.org",
   "repository": {
     "type": "git",
@@ -19,7 +25,6 @@
   "dependencies": {
     "express": "3.2.4",
     "connect-fonts": "git://github.com/shane-tomlinson/connect-fonts.git#dc26916",
-    "connect-fonts-opensans": "git://github.com/shane-tomlinson/connect-fonts-opensans.git#bba11c7",
     "connect-fonts-roboto": "0.0.4",
     "swig": "0.13.5",
     "consolidate": "0.9.1",
@@ -27,7 +32,8 @@
     "matchmodule": "0.1.1",
     "timebot": "0.0.1",
     "helmet": "0.1.0",
-    "spdy": "1.16.9"
+    "spdy": "1.16.9",
+    "connect-fonts-quicksand": "0.0.1"
   },
   "devDependencies": {
     "nodeunit": "0.7.4",

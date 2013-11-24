@@ -8,8 +8,8 @@ const http            = require('http');
 const spdy            = require('spdy');
 const helmet          = require('helmet');
 const connect_fonts   = require('connect-fonts');
-const fontpack_opensans
-                      = require('connect-fonts-opensans');
+const fontpack_quicksand
+                      = require('connect-fonts-quicksand');
 const fontpack_roboto
                       = require('connect-fonts-roboto');
 const fontpack_installer
@@ -61,7 +61,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(connect_fonts.setup({
-  fonts: [ fontpack_opensans, fontpack_roboto ],
+  fonts: [ fontpack_quicksand, fontpack_roboto ],
   allow_origin: "http://connect-fonts.org",
   maxage: 180 * 24 * 60 * 60 * 1000,   // 180 days
   compress: true,

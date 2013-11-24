@@ -6,8 +6,8 @@
   {% parent %}
   <link href="/en/{{ font.name }}/fonts.css" rel="stylesheet"/>
   <style>
-  .{{ font.name }} {
-    font-family: "{{ font.fontFamily }}";
+  body {
+    font-family:"{{ font.fontFamily }}";
     font-weight: {{ font.fontWeight }};
     font-style: {{ font.fontStyle }};
   }
@@ -34,7 +34,7 @@
 
 {% block content %}
 
-  <h2 class="nomargin {{ font.name }}">
+  <h2 class="nomargin">
   {{ font.name }}
   </h2>
   {% include "partials/package-info.html" with font %}
@@ -43,22 +43,22 @@
   <section class="samples">
 
     <h4>36px</h4>
-    <p class="sampletext large {{ font.name }}">
+    <p class="sampletext large">
     {{ sampletext }}
     </p>
 
     <h4>24px</h4>
-    <p class="sampletext {{ font.name }}">
+    <p class="sampletext">
     {{ sampletext }}
     </p>
 
     <h4>18px</h4>
-    <p class="sampletext medium {{ font.name }}">
+    <p class="sampletext medium">
     {{ sampletext }}
     </p>
 
     <h4>12px</h4>
-    <p class="sampletext small {{ font.name }}">
+    <p class="sampletext small">
     {{ sampletext }}
     </p>
 
