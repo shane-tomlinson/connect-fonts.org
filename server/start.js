@@ -45,6 +45,7 @@ app.set('views', TEMPLATE_PATH);
 
 // Redirect all http traffic to https
 app.use(function(req, res, next) {
+  console.log("received request: ", req.url);
  if(!req.secure) {
     var urlObj = url.parse(req.protocol + "://" + req.get('Host') + req.url);
     if (urlObj.host.indexOf(":" + HTTP_PORT) > -1) {
