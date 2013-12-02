@@ -32,7 +32,7 @@
     "matchmodule": "0.1.1",
     "timebot": "0.0.1",
     "helmet": "0.1.0",
-    "spdy": "1.16.9",
+    "spdy": "1.17.2",
     "connect-fonts-quicksand": "0.0.1"
   },
   "devDependencies": {
