@@ -23,16 +23,16 @@
   },
   "main": "index",
   "dependencies": {
-    "express": "3.2.4",
-    "connect-fonts": "git://github.com/shane-tomlinson/connect-fonts.git#dc26916",
+    "express": "3.4.7",
+    "connect-fonts": "0.0.12",
     "connect-fonts-roboto": "0.0.4",
     "swig": "0.13.5",
     "consolidate": "0.9.1",
     "npm": "1.2.24",
     "matchmodule": "0.1.1",
     "timebot": "0.0.1",
-    "helmet": "0.1.0",
-    "spdy": "1.17.2",
+    "helmet": "0.1.2",
+    "spdy": "1.17.10",
     "connect-fonts-quicksand": "0.0.1"
   },
   "devDependencies": {
