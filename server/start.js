@@ -85,6 +85,7 @@ fontpack_installer.setup({
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 helmet.defaults(app, { cacheControl: false });
+helmet.csp.add('default-src', ['https://rum-diary.org']);
 
 app.use(express.static(STATIC_PATH));
 
