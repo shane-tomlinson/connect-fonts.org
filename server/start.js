@@ -1,5 +1,4 @@
 const express         = require('express');
-const cons            = require('consolidate');
 const swig            = require('swig');
 const url             = require('url');
 const path            = require('path');
@@ -15,7 +14,6 @@ const fontpack_roboto
 const fontpack_installer
                       = require('./lib/font-installer');
 const font_packs      = require('./lib/font-packs');
-const util            = require('./lib/util');
 
 const app             = express();
 
@@ -31,22 +29,15 @@ const SSL_CERT_PATH   = path.join(__dirname, '..', 'cert');
 const DEFAULT_SAMPLE_TEXT
                       = "Grumpy wizards make toxic brew for the evil Queen and Jack.";
 
-app.engine('.html', cons.swig);
+app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-
-swig.init({
-  root: TEMPLATE_PATH,
-  allowErrors: true,
-  cache: false
-});
-
-
 app.set('views', TEMPLATE_PATH);
+app.set('view cache', false);
 
 // Redirect all http traffic to https
 app.use(function(req, res, next) {
   console.log("received request: ", req.url);
- if(!req.secure) {
+  if (!req.secure) {
     var urlObj = url.parse(req.protocol + "://" + req.get('Host') + req.url);
     if (urlObj.host.indexOf(":" + HTTP_PORT) > -1) {
       urlObj.host = urlObj.host.replace(":" + HTTP_PORT, ":" + SSL_PORT);
@@ -60,26 +51,28 @@ app.use(function(req, res, next) {
   }
 });
 
-app.use(connect_fonts.setup({
+var fontMiddleware = connect_fonts.setup({
   fonts: [ fontpack_quicksand, fontpack_roboto ],
   allow_origin: "http://connect-fonts.org",
   maxage: 180 * 24 * 60 * 60 * 1000,   // 180 days
   compress: true,
   ua: 'all'
-}));
+});
+
+app.use(fontMiddleware);
 
 font_packs.setup({
-  fontConfigs: connect_fonts.fontConfigs
+  fontConfigs: fontMiddleware.fontConfigs
 });
 
 // Force a refresh of the font list.
 fontpack_installer.setup({
-  fontMiddleware: connect_fonts,
+  fontMiddleware: fontMiddleware,
   updateIntervalMins: 10
 }, function(err) {
   if (err) return err;
 
-  font_packs.update(connect_fonts.fontConfigs);
+  font_packs.update(fontMiddleware.fontConfigs);
 });
 
 app.use(express.cookieParser());
