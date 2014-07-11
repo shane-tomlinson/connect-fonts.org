@@ -6,6 +6,8 @@ const fs              = require('fs');
 const http            = require('http');
 const spdy            = require('spdy');
 const helmet          = require('helmet');
+const rum_diary_endpoint
+                      = require('rum-diary-endpoint');
 const connect_fonts   = require('connect-fonts');
 const fontpack_quicksand
                       = require('connect-fonts-quicksand');
@@ -31,6 +33,17 @@ const DEFAULT_SAMPLE_TEXT
 
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
+app.set('views', TEMPLATE_PATH);
+
+// Swig will cache templates for you, but you can disable
+// that and use Express's caching instead, if you like:
+app.set('view cache', false);
+
+swig.setDefaults({
+  cache: false
+});
+
+
 app.set('views', TEMPLATE_PATH);
 app.set('view cache', false);
 
@@ -77,8 +90,20 @@ fontpack_installer.setup({
 
 app.use(express.cookieParser());
 app.use(express.bodyParser());
-helmet.defaults(app, { cacheControl: false });
-helmet.csp.add('default-src', ['https://rum-diary.org']);
+app.use(helmet());
+
+
+const httpCollector = new rum_diary_endpoint.collectors.Http({
+  collectorUrl: 'https://rum-diary.org/load',
+  maxCacheSize: 1
+});
+
+const metricsMiddleware = rum_diary_endpoint.setup({
+  endpoint: '/metrics',
+  collectors: [ httpCollector ]
+});
+
+app.use(metricsMiddleware);
 
 app.use(express.static(STATIC_PATH));
 
