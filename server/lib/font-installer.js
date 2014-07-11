@@ -114,7 +114,10 @@ exports.loadNew = function(done) {
         if ( ! shouldInstallPackage(packageName)) return next();
 
         npm.commands.install([packageName], function(err) {
-          if (err) return done(err);
+          if (err) {
+            console.error(String(err));
+            return next();
+          }
 
           registerFontPack(packageName, next);
         });
