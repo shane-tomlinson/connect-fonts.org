@@ -4,7 +4,7 @@
 
 const npm           = require("npm");
 const path          = require("path");
-const matchmodule   = require("matchmodule");
+const globule       = require("globule");
 const util          = require("./util");
 const timebot       = require("timebot");
 const dependencies  = require(path.join(__dirname, "..", "..", "package.json")).dependencies;
@@ -86,7 +86,9 @@ function registerFontPack(packageName, done) {
  */
 exports.loadInstalled = function(done) {
   console.log("searching for installed fonts");
-  var packageNames = matchmodule.filter(PACKAGE_QUERY + '*');
+  var packageNames = globule.find('connect*', {
+    srcBase: path.join(__dirname, '..', '..', 'node_modules')
+  });
   console.log(packageNames.length + " potential installed font packs found");
 
   if (! packageNames.length) {
