@@ -31,6 +31,11 @@ const SSL_CERT_PATH   = path.join(__dirname, '..', 'cert');
 const DEFAULT_SAMPLE_TEXT
                       = "Grumpy wizards make toxic brew for the evil Queen and Jack.";
 
+process.on('uncaughtException', function (err) {
+  console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+  console.error(err.stack);
+});
+
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', TEMPLATE_PATH);
