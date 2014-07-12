@@ -31,7 +31,7 @@
     "globule": "0.2.0",
     "helmet": "0.3.2",
     "npm": "1.4.20",
-    "rum-diary-endpoint": "0.0.1",
+    "rum-diary-endpoint": "0.0.2",
     "spdy": "1.27.0",
     "swig": "1.4.1",
     "timebot": "0.0.1"
