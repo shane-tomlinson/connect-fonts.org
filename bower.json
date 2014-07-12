@@ -1,0 +1,20 @@
+{
+  "name": "connect-fonts.org",
+  "version": "0.0.0",
+  "homepage": "https://github.com/shane-tomlinson/connect-fonts.org",
+  "authors": [
+    "Shane Tomlinson <shane@shanetomlinson.com>"
+  ],
+  "license": "MPL2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/src/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "rum-diary-js-client": "0.0.2"
+  }
+}

@@ -4,7 +4,7 @@
 
 const npm           = require("npm");
 const path          = require("path");
-const matchmodule   = require("matchmodule");
+const globule       = require("globule");
 const util          = require("./util");
 const timebot       = require("timebot");
 const dependencies  = require(path.join(__dirname, "..", "..", "package.json")).dependencies;
@@ -47,7 +47,10 @@ exports.setup = function(options, done) {
   exports.loadInstalled(function(err) {
     if (err) return done(err);
     exports.loadNew(function(err) {
-      if (err) return done(err);
+      if (err) {
+        console.error('error loading fonts: %s', String(err));
+        return done(err);
+      }
 
       // Refresh the font list from npm every updateIntervalMins
       timebot.set({
@@ -56,7 +59,9 @@ exports.setup = function(options, done) {
       }, {
         cron: function() {
           console.log("refreshing font list");
-          exports.loadNew();
+          exports.loadNew(function (err) {
+            if (err) console.error('error loading fonts: %s', String(err));
+          });
         }
       });
     });
@@ -81,8 +86,14 @@ function registerFontPack(packageName, done) {
  */
 exports.loadInstalled = function(done) {
   console.log("searching for installed fonts");
-  var packageNames = matchmodule.filter(PACKAGE_QUERY + '*');
+  var packageNames = globule.find('connect*', {
+    srcBase: path.join(__dirname, '..', '..', 'node_modules')
+  });
   console.log(packageNames.length + " potential installed font packs found");
+
+  if (! packageNames.length) {
+    return done();
+  }
 
   util.asyncForEach(packageNames, function(packageName, index, next) {
     console.log(packageName);
@@ -109,12 +120,19 @@ exports.loadNew = function(done) {
 
       console.log(packageNames.length + " potential npm font packs found");
 
+      if (! packageNames.length) {
+        return done();
+      }
+
       util.asyncForEach(packageNames, function(packageName, index, next) {
         console.log(packageName);
         if ( ! shouldInstallPackage(packageName)) return next();
 
         npm.commands.install([packageName], function(err) {
-          if (err) return done(err);
+          if (err) {
+            console.error(String(err));
+            return next();
+          }
 
           registerFontPack(packageName, next);
         });
