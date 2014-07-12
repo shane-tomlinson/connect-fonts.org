@@ -99,7 +99,7 @@ app.use(helmet());
 
 
 const httpCollector = new rum_diary_endpoint.collectors.Http({
-  collectorUrl: 'https://rum-diary.org/load',
+  collectorUrl: 'https://rum-diary.org/metrics',
   maxCacheSize: 1
 });
 
