@@ -47,7 +47,10 @@ exports.setup = function(options, done) {
   exports.loadInstalled(function(err) {
     if (err) return done(err);
     exports.loadNew(function(err) {
-      if (err) return done(err);
+      if (err) {
+        console.error('error loading fonts: %s', String(err));
+        return done(err);
+      }
 
       // Refresh the font list from npm every updateIntervalMins
       timebot.set({
@@ -56,7 +59,9 @@ exports.setup = function(options, done) {
       }, {
         cron: function() {
           console.log("refreshing font list");
-          exports.loadNew();
+          exports.loadNew(function (err) {
+            if (err) console.error('error loading fonts: %s', String(err));
+          });
         }
       });
     });
@@ -84,6 +89,10 @@ exports.loadInstalled = function(done) {
   var packageNames = matchmodule.filter(PACKAGE_QUERY + '*');
   console.log(packageNames.length + " potential installed font packs found");
 
+  if (! packageNames.length) {
+    return done();
+  }
+
   util.asyncForEach(packageNames, function(packageName, index, next) {
     console.log(packageName);
     if ( ! shouldInstallPackage(packageName)) return next();
@@ -108,6 +117,10 @@ exports.loadNew = function(done) {
       var packageNames = Object.keys(packages);
 
       console.log(packageNames.length + " potential npm font packs found");
+
+      if (! packageNames.length) {
+        return done();
+      }
 
       util.asyncForEach(packageNames, function(packageName, index, next) {
         console.log(packageName);
